@@ -43,7 +43,7 @@ python3 -m pip install -r requirements.txt
 Run the Streamlit app:
 
 ```bash
-streamlit run app/dashboard_app.py
+streamlit run streamlit_app.py
 ```
 
 Build the static HTML dashboard:
@@ -83,7 +83,9 @@ The app loads pre-trained models from `models/hw1_predict/` and does not retrain
 
 ```text
 app/
+  __init__.py
   dashboard_app.py
+streamlit_app.py
 scripts/
   train_predict_models.py
   export_html_dashboard.py
@@ -112,6 +114,7 @@ This keeps the repo reproducible without pushing bulky local artifacts.
 
 ## Deployment
 
+- Streamlit Community Cloud entry file: `streamlit_app.py`
 - Streamlit app link: `TBD`
 - HTML export path: `outputs/dashboard/index.html`
 
@@ -120,4 +123,3 @@ This keeps the repo reproducible without pushing bulky local artifacts.
 - `requirements.txt` is included for environment setup.
 - `.streamlit/config.toml` disables usage telemetry.
 - Models are small enough for standard Git; Git LFS is not required for this repo.
-
