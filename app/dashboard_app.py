@@ -158,6 +158,17 @@ SEARCH_MODE_OPTIONS: List[Tuple[str, str]] = [
     ("map", "Map Search"),
     ("hybrid", "Keyword + Map"),
 ]
+PUBLIC_NAV_ITEMS: List[Tuple[str, str]] = [
+    ("overview", "Project Overview"),
+    ("search", "Restaurant Search"),
+    ("summary", "Historical Insights"),
+]
+ASSIGNMENT_NAV_ITEMS: List[Tuple[str, str]] = [
+    ("executive", "Executive Summary"),
+    ("descriptive", "Descriptive Analytics"),
+    ("performance", "Model Performance"),
+    ("explainability", "Explainability & Interactive Prediction"),
+]
 RATING_COLOR_MAP = {
     "Excellent": "#099268",
     "Good": "#82c91e",
@@ -1219,7 +1230,102 @@ div[data-testid="stMetricValue"] {
   color: #5d7d85;
   font-size: 12px;
 }
+.nav-shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  margin: 0 0 0.7rem;
+}
+.nav-shell-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #5d7d85;
+}
+.nav-shell-note {
+  font-size: 0.9rem;
+  color: #49676f;
+}
+.nav-group-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.62rem;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nav-group-public-label {
+  color: #0d8a98;
+  background: rgba(13, 138, 152, 0.10);
+  border: 1px solid rgba(13, 138, 152, 0.18);
+}
+.nav-group-assignment-label {
+  color: #0f2d36;
+  background: rgba(15, 45, 54, 0.08);
+  border: 1px solid rgba(15, 45, 54, 0.12);
+}
+div[data-testid="column"]:has(.nav-group-public-label),
+div[data-testid="column"]:has(.nav-group-assignment-label) {
+  background: linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(248,252,252,0.96) 100%);
+  border: 1px solid #cae0e4;
+  border-radius: 18px;
+  padding: 0.88rem 0.95rem 0.84rem;
+  box-shadow: 0 8px 24px rgba(15, 45, 54, 0.08);
+}
+div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button,
+div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button {
+  min-height: 3.7rem;
+  border-radius: 14px !important;
+  padding: 0.82rem 0.9rem !important;
+  white-space: normal !important;
+  line-height: 1.18 !important;
+  font-size: 0.94rem !important;
+  justify-content: center !important;
+  align-items: center !important;
+  box-shadow: none !important;
+}
+div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button {
+  border-color: #b6dfe4 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f4fcfd 100%) !important;
+}
+div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button[kind="primary"] {
+  background: linear-gradient(135deg, #16a2af, #0d8a98) !important;
+  border-color: #0d8a98 !important;
+  color: #f5feff !important;
+}
+div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button {
+  border-color: #c8d8db !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fafb 100%) !important;
+}
+div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button[kind="primary"] {
+  background: linear-gradient(135deg, #0f2d36, #1c5664) !important;
+  border-color: #0f2d36 !important;
+  color: #f5feff !important;
+}
 @media (max-width: 768px) {
+  .nav-shell {
+    display: block;
+  }
+  .nav-shell-note {
+    margin-top: 0.3rem;
+  }
+  div[data-testid="column"]:has(.nav-group-public-label),
+  div[data-testid="column"]:has(.nav-group-assignment-label) {
+    padding: 0.72rem 0.78rem;
+    border-radius: 14px;
+  }
+  div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button,
+  div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button {
+    min-height: 3.15rem;
+    font-size: 0.82rem !important;
+    padding: 0.66rem 0.56rem !important;
+  }
   div[data-testid="stVerticalBlock"] > div:has(> div[data-testid="stTabs"]) {
     border-radius: 12px;
     padding: 0.45rem 0.5rem 0.7rem;
@@ -3624,7 +3730,7 @@ def build_summary_tab(
                             "transition": "Rating change",
                         }
                     )
-                    .sort_values(by=["inspection_date"], ascending=False),
+                    .sort_values(by=["Current date"], ascending=False),
                     use_container_width=True,
                     hide_index=True,
                     height=320,
@@ -3655,7 +3761,7 @@ def build_summary_tab(
                             "transition": "Rating change",
                         }
                     )
-                    .sort_values(by=["inspection_date"], ascending=False),
+                    .sort_values(by=["Current date"], ascending=False),
                     use_container_width=True,
                     hide_index=True,
                     height=320,
@@ -5409,6 +5515,53 @@ def build_explainability_prediction_tab(
         )
 
 
+def render_main_navigation() -> str:
+    nav_labels = dict(PUBLIC_NAV_ITEMS + ASSIGNMENT_NAV_ITEMS)
+    default_nav = PUBLIC_NAV_ITEMS[0][0]
+    current_nav = clean_text(st.session_state.get("main_nav_section", default_nav))
+    if current_nav not in nav_labels:
+        current_nav = default_nav
+        st.session_state["main_nav_section"] = current_nav
+
+    st.markdown(
+        (
+            "<div class='nav-shell'>"
+            "<div class='nav-shell-title'>Navigation</div>"
+            "<div class='nav-shell-note'>Public release on the left, assignment workflow on the right.</div>"
+            "</div>"
+        ),
+        unsafe_allow_html=True,
+    )
+
+    public_col, assignment_col = st.columns([1.0, 1.45], gap="large")
+
+    def render_group(container: Any, title: str, title_class: str, items: List[Tuple[str, str]]) -> None:
+        container.markdown(
+            f"<div class='nav-group-label {title_class}'>{escape(title)}</div>",
+            unsafe_allow_html=True,
+        )
+        button_cols = container.columns(len(items), gap="small")
+        for col, (nav_key, nav_label) in zip(button_cols, items):
+            button_type = "primary" if current_nav == nav_key else "secondary"
+            if col.button(nav_label, key=f"main_nav_{nav_key}", use_container_width=True, type=button_type):
+                if st.session_state.get("main_nav_section") != nav_key:
+                    st.session_state["main_nav_section"] = nav_key
+                    st.rerun()
+
+    render_group(public_col, "Public Release", "nav-group-public-label", PUBLIC_NAV_ITEMS)
+    render_group(assignment_col, "Assignment Workflow", "nav-group-assignment-label", ASSIGNMENT_NAV_ITEMS)
+    return clean_text(st.session_state.get("main_nav_section", current_nav)) or default_nav
+
+
+def render_panel_with_guard(panel_label: str, render_func: Any, *args: Any) -> None:
+    try:
+        render_func(*args)
+    except KeyError as exc:
+        st.error(f"{panel_label} failed to render because a required field is missing: {exc}")
+    except Exception as exc:
+        st.error(f"{panel_label} failed to render: {exc}")
+
+
 def main() -> None:
     if st is None:
         raise RuntimeError(
@@ -5438,47 +5591,35 @@ def main() -> None:
     if summary_df.empty:
         st.warning("No restaurant data available.")
         st.stop()
+    active_panel = render_main_navigation()
 
-    (
-        overview_tab,
-        search_tab,
-        summary_tab,
-        executive_tab,
-        descriptive_tab,
-        performance_tab,
-        explainability_tab,
-    ) = st.tabs(
-        [
-            "Project Overview",
-            "Restaurant Search",
-            "Historical Insights",
+    if active_panel == "overview":
+        render_panel_with_guard("Project Overview", build_overview_tab, events_df, violations_df, payload, root)
+    elif active_panel == "search":
+        render_panel_with_guard("Restaurant Search", build_search_tab, summary_df, events_df, violations_df)
+    elif active_panel == "summary":
+        render_panel_with_guard("Historical Insights", build_summary_tab, events_df, violations_df, payload, root)
+    elif active_panel == "executive":
+        render_panel_with_guard(
             "Executive Summary",
-            "Descriptive Analytics",
-            "Model Performance",
+            build_executive_summary_tab,
+            events_df,
+            violations_df,
+            summary_df,
+            root,
+        )
+    elif active_panel == "descriptive":
+        render_panel_with_guard("Descriptive Analytics", build_descriptive_analytics_tab, events_df)
+    elif active_panel == "performance":
+        render_panel_with_guard("Model Performance", build_model_performance_tab, root)
+    elif active_panel == "explainability":
+        render_panel_with_guard(
             "Explainability & Interactive Prediction",
-        ]
-    )
-
-    with overview_tab:
-        build_overview_tab(events_df, violations_df, payload, root)
-
-    with search_tab:
-        build_search_tab(summary_df, events_df, violations_df)
-
-    with summary_tab:
-        build_summary_tab(events_df, violations_df, payload, root)
-
-    with executive_tab:
-        build_executive_summary_tab(events_df, violations_df, summary_df, root)
-
-    with descriptive_tab:
-        build_descriptive_analytics_tab(events_df)
-
-    with performance_tab:
-        build_model_performance_tab(root)
-
-    with explainability_tab:
-        build_explainability_prediction_tab(events_df, summary_df, root)
+            build_explainability_prediction_tab,
+            events_df,
+            summary_df,
+            root,
+        )
 
 
 if __name__ == "__main__":
