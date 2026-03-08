@@ -65,6 +65,7 @@ except ModuleNotFoundError:  # pragma: no cover - fallback for non-ML env
     SKLEARN_AVAILABLE = False
 
 DATASET_ID = "f29f-zza5"
+DEPLOY_BUNDLE_DIRNAME = "deploy_bundle"
 SPACE_RE = re.compile(r"\s+")
 NON_ALNUM_RE = re.compile(r"[^A-Z0-9 ]+")
 HIGH_RISK_GRADES = {"4"}
@@ -876,10 +877,77 @@ def ensure_columns(df: pd.DataFrame, defaults: Dict[str, object]) -> pd.DataFram
     return df
 
 
+def path_with_gzip_variants(path: Path) -> List[Path]:
+    variants = [path]
+    if path.suffix != ".gz":
+        variants.append(Path(f"{path}.gz"))
+    return variants
+
+
+def resolve_first_existing_path(paths: List[Path]) -> Optional[Path]:
+    for path in paths:
+        if path.exists():
+            return path
+    return None
+
+
+def dataset_path_candidates(root: Path, *parts: str) -> List[Path]:
+    candidates: List[Path] = []
+    for base_dir_name in ("Data", DEPLOY_BUNDLE_DIRNAME):
+        candidates.extend(path_with_gzip_variants(root / base_dir_name / Path(*parts)))
+    return candidates
+
+
+def payload_path_candidates(root: Path, raw_value: object) -> List[Path]:
+    value = clean_text(raw_value)
+    if not value:
+        return []
+    payload_path = Path(value)
+    if not payload_path.is_absolute():
+        payload_path = root / payload_path
+    return path_with_gzip_variants(payload_path)
+
+
+def resolve_repo_path(root: Path, raw_value: object) -> str:
+    value = clean_text(raw_value)
+    if not value:
+        return ""
+
+    raw_path = Path(value)
+    candidates: List[Path] = []
+    if raw_path.is_absolute():
+        for anchor in ("models", "outputs", "images", "docs", "deploy_bundle", "Data"):
+            if anchor in raw_path.parts:
+                anchor_index = raw_path.parts.index(anchor)
+                candidates.extend(path_with_gzip_variants(root.joinpath(*raw_path.parts[anchor_index:])))
+                break
+        candidates.extend(path_with_gzip_variants(raw_path))
+    else:
+        candidates.extend(path_with_gzip_variants(root / raw_path))
+        candidates.extend(path_with_gzip_variants(raw_path))
+
+    resolved = resolve_first_existing_path(candidates)
+    return str(resolved or raw_path)
+
+
+def resolve_nested_paths(root: Path, value: Any) -> Any:
+    if isinstance(value, dict):
+        return {k: resolve_nested_paths(root, v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [resolve_nested_paths(root, item) for item in value]
+    if isinstance(value, str):
+        return resolve_repo_path(root, value)
+    return value
+
+
 def load_latest_run_payload(root: Path) -> Dict[str, str]:
-    state_path = root / "Data" / "state" / f"{DATASET_ID}_latest_run.json"
-    if not state_path.exists():
-        raise FileNotFoundError(f"latest run state not found: {state_path}")
+    state_candidates = [
+        root / "Data" / "state" / f"{DATASET_ID}_latest_run.json",
+        root / DEPLOY_BUNDLE_DIRNAME / "state" / f"{DATASET_ID}_latest_run.json",
+    ]
+    state_path = resolve_first_existing_path(state_candidates)
+    if state_path is None:
+        raise FileNotFoundError(f"latest run state not found: {state_candidates[0]}")
     with state_path.open("r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -887,27 +955,30 @@ def load_latest_run_payload(root: Path) -> Dict[str, str]:
 def resolve_data_paths(root: Path, payload: Dict[str, str]) -> Tuple[Path, Path]:
     run_id = str(payload.get("run_id", "")).strip()
 
-    silver_event_csv = Path(str(payload.get("silver_event_csv", "")))
-    if not silver_event_csv.exists():
-        silver_event_csv = root / "Data" / "silver" / DATASET_ID / run_id / "inspection_event.csv"
+    silver_candidates = payload_path_candidates(root, payload.get("silver_event_csv", ""))
+    silver_candidates.extend(
+        dataset_path_candidates(root, "silver", DATASET_ID, run_id, "inspection_event.csv")
+    )
+    silver_event_csv = resolve_first_existing_path(silver_candidates)
 
-    dashboard_violation_csv = Path(str(payload.get("dashboard_violation_explained_csv", "")))
-    if not dashboard_violation_csv.exists():
-        dashboard_violation_csv = (
-            root / "Data" / "gold" / DATASET_ID / run_id / "dashboard_violation_explained.csv"
-        )
+    violation_candidates = payload_path_candidates(root, payload.get("dashboard_violation_explained_csv", ""))
+    violation_candidates.extend(
+        dataset_path_candidates(root, "gold", DATASET_ID, run_id, "dashboard_violation_explained.csv")
+    )
+    dashboard_violation_csv = resolve_first_existing_path(violation_candidates)
 
-    if not silver_event_csv.exists():
-        raise FileNotFoundError(f"silver event csv not found: {silver_event_csv}")
-    if not dashboard_violation_csv.exists():
-        raise FileNotFoundError(f"dashboard violation csv not found: {dashboard_violation_csv}")
+    if silver_event_csv is None:
+        raise FileNotFoundError(f"silver event csv not found: {silver_candidates[0]}")
+    if dashboard_violation_csv is None:
+        raise FileNotFoundError(f"dashboard violation csv not found: {violation_candidates[0]}")
 
     return silver_event_csv, dashboard_violation_csv
 
 
 def resolve_bronze_raw_csv_path(root: Path, payload: Dict[str, str]) -> Path:
     run_id = str(payload.get("run_id", "")).strip()
-    return root / "Data" / "bronze" / DATASET_ID / run_id / "raw.csv"
+    raw_candidates = dataset_path_candidates(root, "bronze", DATASET_ID, run_id, "raw.csv")
+    return resolve_first_existing_path(raw_candidates) or raw_candidates[0]
 
 
 def cache_data(func):
@@ -958,8 +1029,14 @@ def _append_boundary_ring_coords(
 
 @cache_data
 def load_king_county_boundary_line_coords(root_str: str) -> Tuple[List[Optional[float]], List[Optional[float]]]:
-    boundary_path = Path(root_str) / "data" / "reference" / "king_county_boundary.geojson"
-    if not boundary_path.exists():
+    root = Path(root_str)
+    boundary_candidates = [
+        root / "Data" / "reference" / "king_county_boundary.geojson",
+        root / DEPLOY_BUNDLE_DIRNAME / "reference" / "king_county_boundary.geojson",
+        root / "data" / "reference" / "king_county_boundary.geojson",
+    ]
+    boundary_path = resolve_first_existing_path(boundary_candidates)
+    if boundary_path is None:
         return [], []
 
     with boundary_path.open("r", encoding="utf-8") as f:
@@ -1378,8 +1455,10 @@ def load_risk_description_lookups(
     root_str: str, run_id: str
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     root = Path(root_str)
-    raw_csv = root / "Data" / "bronze" / DATASET_ID / run_id / "raw.csv"
-    if not raw_csv.exists():
+    raw_csv = resolve_first_existing_path(
+        dataset_path_candidates(root, "bronze", DATASET_ID, run_id, "raw.csv")
+    )
+    if raw_csv is None:
         return (
             pd.DataFrame(columns=["inspection_serial_num", "risk_description_raw"]),
             pd.DataFrame(columns=["business_id", "inspection_date", "inspection_type", "risk_description_raw"]),
@@ -2603,8 +2682,9 @@ def load_predict_manifest(root_str: str) -> Dict[str, Any]:
     if latest_pointer.exists():
         try:
             payload = json.loads(latest_pointer.read_text(encoding="utf-8"))
-            maybe_path = Path(clean_text(payload.get("manifest_path", "")))
-            if maybe_path.exists():
+            maybe_path_str = resolve_repo_path(root, payload.get("manifest_path", ""))
+            maybe_path = Path(maybe_path_str) if maybe_path_str else Path()
+            if maybe_path_str and maybe_path.exists():
                 manifest_path = maybe_path
         except Exception:
             manifest_path = default_manifest
@@ -2620,7 +2700,7 @@ def load_predict_manifest(root_str: str) -> Dict[str, Any]:
             "manifest_path": str(manifest_path),
         }
 
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest = resolve_nested_paths(root, json.loads(manifest_path.read_text(encoding="utf-8")))
     return {
         "available": True,
         "message": "",
@@ -2631,7 +2711,8 @@ def load_predict_manifest(root_str: str) -> Dict[str, Any]:
 
 @cache_data
 def load_csv_safe(path_str: str) -> pd.DataFrame:
-    path = Path(path_str)
+    path_value = resolve_repo_path(app_root(), path_str)
+    path = Path(path_value)
     if not path.exists():
         return pd.DataFrame()
     return pd.read_csv(path)
@@ -2639,7 +2720,8 @@ def load_csv_safe(path_str: str) -> pd.DataFrame:
 
 @cache_data
 def load_json_safe(path_str: str) -> Dict[str, Any]:
-    path = Path(path_str)
+    path_value = resolve_repo_path(app_root(), path_str)
+    path = Path(path_value)
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
@@ -2649,7 +2731,8 @@ def load_json_safe(path_str: str) -> Dict[str, Any]:
 def load_joblib_resource(path_str: str) -> Any:
     if not JOBLIB_AVAILABLE:
         raise RuntimeError("joblib is required for loading trained models.")
-    return joblib.load(path_str)
+    resolved_path = resolve_repo_path(app_root(), path_str)
+    return joblib.load(resolved_path)
 
 
 if TORCH_AVAILABLE:
@@ -2680,7 +2763,10 @@ def load_torch_mlp_bundle(model_path_str: str, preprocessor_path_str: str) -> Di
     if not JOBLIB_AVAILABLE:
         raise RuntimeError("joblib is required for MLP preprocessing.")
 
-    checkpoint = torch.load(model_path_str, map_location="cpu")
+    model_path = resolve_repo_path(app_root(), model_path_str)
+    preprocessor_path = resolve_repo_path(app_root(), preprocessor_path_str)
+
+    checkpoint = torch.load(model_path, map_location="cpu")
     input_dim = int(checkpoint.get("input_dim", 0))
     if input_dim <= 0:
         raise RuntimeError("Invalid PyTorch checkpoint: input_dim missing or invalid.")
@@ -2692,7 +2778,7 @@ def load_torch_mlp_bundle(model_path_str: str, preprocessor_path_str: str) -> Di
     model.load_state_dict(checkpoint["state_dict"])
     model.eval()
 
-    preprocessor = joblib.load(preprocessor_path_str)
+    preprocessor = joblib.load(preprocessor_path)
     return {
         "model": model,
         "preprocessor": preprocessor,
