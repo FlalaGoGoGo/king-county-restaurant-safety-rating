@@ -1082,29 +1082,29 @@ def apply_global_styles() -> None:
 <style>
 html, body, [class*="css"] {
   font-family: "Avenir Next", "IBM Plex Sans", "Trebuchet MS", "Segoe UI", sans-serif;
+  background: #ffffff;
 }
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700 !important;
   letter-spacing: 0.01em;
 }
 div[data-testid="stAppViewContainer"] {
-  background:
-    radial-gradient(1200px 500px at 8% -5%, rgba(39, 194, 168, 0.26), transparent 60%),
-    radial-gradient(900px 500px at 95% 0%, rgba(13, 138, 152, 0.18), transparent 65%),
-    linear-gradient(145deg, #e8f4f5 0%, #d7ecee 35%, #eef8f9 100%);
+  background: #ffffff;
+}
+section.main {
+  background: #ffffff;
 }
 div[data-testid="stHeader"] {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid rgba(15, 45, 54, 0.06);
 }
 div[data-testid="stToolbar"] {
   right: 0.75rem;
 }
-div[data-testid="stVerticalBlock"] > div:has(> div[data-testid="stTabs"]) {
-  border: 1px solid #cae0e4;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 10px 30px rgba(15, 45, 54, 0.12);
-  padding: 0.6rem 0.8rem 1rem;
+.block-container {
+  max-width: 1360px;
+  padding-top: 1.35rem;
+  padding-bottom: 3rem;
 }
 div[data-testid="stMetricLabel"] > div {
   font-weight: 600 !important;
@@ -1154,10 +1154,38 @@ div[data-testid="stMetricValue"] {
   border-radius: 10px !important;
   border: 1px solid #9fc8cf !important;
   font-weight: 700 !important;
+  min-height: 2.8rem;
+  padding: 0.68rem 0.95rem !important;
+  white-space: normal !important;
+  line-height: 1.2 !important;
 }
 [data-testid="stButton"] button[kind="primary"] {
   background: linear-gradient(135deg, #08727f, #0d8a98) !important;
   color: #f5feff !important;
+}
+[data-testid="stButton"] button > div {
+  text-align: left;
+}
+[data-testid="stPlotlyChart"],
+[data-testid="stImage"],
+[data-testid="stPyplot"] {
+  border: 1px solid #dde8ea;
+  border-radius: 18px;
+  background: #ffffff;
+  padding: 0.55rem;
+  box-shadow: 0 8px 18px rgba(15, 45, 54, 0.05);
+}
+[data-testid="stImage"] img {
+  border-radius: 14px;
+}
+[data-testid="stExpander"] {
+  border: 1px solid #dde8ea !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fafdfd 100%);
+}
+.stCaptionContainer,
+[data-testid="stCaptionContainer"] {
+  color: #607f86;
 }
 .stDataFrame {
   border: 1px solid #cae0e4;
@@ -1230,6 +1258,65 @@ div[data-testid="stMetricValue"] {
   color: #5d7d85;
   font-size: 12px;
 }
+.section-hero {
+  margin: 0 0 1rem;
+  padding: 1rem 1.1rem 1rem;
+  border: 1px solid #dde8ea;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fbfb 100%);
+  box-shadow: 0 12px 28px rgba(15, 45, 54, 0.06);
+}
+.section-kicker {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #0d8a98;
+  margin-bottom: 0.35rem;
+}
+.section-title {
+  margin: 0;
+  color: #0f2d36;
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.section-subtitle {
+  margin-top: 0.5rem;
+  color: #4c6a72;
+  line-height: 1.55;
+  font-size: 0.97rem;
+}
+.subsection-label {
+  margin: 0.45rem 0 0.55rem;
+  color: #0f2d36;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.panel-hint {
+  margin: 0.3rem 0 0.75rem;
+  color: #607f86;
+  font-size: 0.9rem;
+}
+.glass-panel {
+  border: 1px solid #dde8ea;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
+  padding: 0.95rem 1rem;
+  box-shadow: 0 8px 20px rgba(15, 45, 54, 0.05);
+}
+.compact-rule {
+  margin: 0.9rem 0 1rem;
+  border-top: 1px solid #e4edef;
+}
+.media-frame {
+  border: 1px solid #dde8ea;
+  border-radius: 18px;
+  background: #ffffff;
+  padding: 0.8rem;
+  box-shadow: 0 6px 18px rgba(15, 45, 54, 0.05);
+}
 .nav-shell {
   display: flex;
   align-items: center;
@@ -1280,14 +1367,15 @@ div[data-testid="column"]:has(.nav-group-assignment-label) {
 }
 div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button,
 div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button {
-  min-height: 3.7rem;
+  min-height: 4.1rem;
   border-radius: 14px !important;
-  padding: 0.82rem 0.9rem !important;
+  padding: 0.88rem 1rem !important;
   white-space: normal !important;
   line-height: 1.18 !important;
-  font-size: 0.94rem !important;
-  justify-content: center !important;
+  font-size: 0.92rem !important;
+  justify-content: flex-start !important;
   align-items: center !important;
+  text-align: left !important;
   box-shadow: none !important;
 }
 div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button {
@@ -1309,6 +1397,16 @@ div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButto
   color: #f5feff !important;
 }
 @media (max-width: 768px) {
+  .section-hero {
+    padding: 0.82rem 0.88rem 0.9rem;
+    border-radius: 16px;
+  }
+  .section-title {
+    font-size: 1.25rem;
+  }
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
   .nav-shell {
     display: block;
   }
@@ -1325,21 +1423,6 @@ div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButto
     min-height: 3.15rem;
     font-size: 0.82rem !important;
     padding: 0.66rem 0.56rem !important;
-  }
-  div[data-testid="stVerticalBlock"] > div:has(> div[data-testid="stTabs"]) {
-    border-radius: 12px;
-    padding: 0.45rem 0.5rem 0.7rem;
-  }
-  [data-testid="stTabs"] [data-baseweb="tab-list"] {
-    gap: 0.35rem;
-    border-radius: 10px;
-    padding: 0.25rem;
-  }
-  [data-testid="stTabs"] button[role="tab"] {
-    font-size: 0.82rem !important;
-    min-height: 2rem !important;
-    padding: 0.25rem 0.45rem !important;
-    margin-left: 0 !important;
   }
   [data-testid="stButton"] button {
     width: 100%;
@@ -1418,7 +1501,8 @@ def render_search_mode_buttons() -> str:
         current_mode = "keyword"
         st.session_state["search_mode"] = current_mode
 
-    mode_cols = st.columns(len(SEARCH_MODE_OPTIONS))
+    mode_weights = [max(1.0, min(1.25, len(mode_label) / 12.5)) for _, mode_label in SEARCH_MODE_OPTIONS]
+    mode_cols = st.columns(mode_weights, gap="small")
     for col, (mode_key, mode_label) in zip(mode_cols, SEARCH_MODE_OPTIONS):
         translated_mode_label = tr(f"mode.{mode_key}") if st is not None else mode_label
         button_type = "primary" if current_mode == mode_key else "secondary"
@@ -1518,7 +1602,7 @@ def build_search_map_figure(map_df: pd.DataFrame, selected_business_id: str = ""
         mode="markers",
         customdata=customdata,
         marker={
-            "size": 11,
+            "size": 10,
             "color": colors,
             "opacity": 0.82,
         },
@@ -1553,7 +1637,7 @@ def build_search_map_figure(map_df: pd.DataFrame, selected_business_id: str = ""
             "zoom": zoom,
         },
         margin={"l": 0, "r": 0, "t": 0, "b": 0},
-        height=430,
+        height=382,
         clickmode="event+select",
         dragmode="pan",
         showlegend=False,
@@ -2643,8 +2727,11 @@ def build_overview_tab(
     payload: Dict[str, str],
     root: Path,
 ) -> None:
-    st.subheader(tr("overview.header"))
-    st.caption("A public-facing guide to King County restaurant hygiene inspection information.")
+    render_section_header(
+        tr("overview.header"),
+        "A public-facing guide to King County restaurant hygiene inspection data, rating rules, and public-use pathways.",
+        "Public Release",
+    )
 
     red_count = int(
         violations_df["violation_type"].astype(str).str.upper().str.strip().eq("RED").sum()
@@ -2658,26 +2745,31 @@ def build_overview_tab(
     o3.metric("Red violation records", f"{red_count:,}")
     o4.metric("Blue violation records", f"{blue_count:,}")
 
-    st.markdown("**Why this project exists**")
-    st.write(
-        "Many people can find a restaurant but still struggle to interpret inspection records. "
-        "This project translates county inspection data into clearer search, trend, and risk views."
+    render_subsection_label(
+        "What this dashboard covers",
+        "The public side should explain the inspection system quickly before users dive into search and homework analytics.",
     )
+    intro_cols = st.columns(3)
+    with intro_cols[0]:
+        render_essay_card(
+            "Why this project exists",
+            "Many people can find a restaurant but still struggle to interpret inspection records. This dashboard translates county inspection data into clearer search, trend, and risk views.",
+        )
+    with intro_cols[1]:
+        render_essay_card(
+            "Who it serves",
+            "The project was built as an MSIS data science deliverable, but it is structured for public use by consumers, restaurant owners, regulators, and a King County audit view.",
+        )
+    with intro_cols[2]:
+        render_essay_card(
+            "How to navigate it",
+            "Use Restaurant Search for one venue, Historical Insights for cross-restaurant patterns, and the homework tabs for predictive analytics, model comparison, and owner-facing explanation.",
+        )
 
-    st.markdown("**Who built this and who it serves**")
-    st.write(
-        "This dashboard was built as an MSIS data science project and designed for consumers, restaurant owners, "
-        "regulators, and a King County audit view."
+    render_subsection_label(
+        "Official rating levels and posters",
+        "This table mirrors the county-facing rating logic and keeps the poster reference next to the rule explanation.",
     )
-
-    st.markdown("**How to use this dashboard**")
-    st.markdown(
-        "1. `Restaurant Search`: find a restaurant and review detailed inspections and remediation guidance.\n"
-        "2. `Historical Insights`: compare trends across consumers, owners, regulators, and a King County audit view.\n"
-        "3. `Executive Summary` through `Explainability & Interactive Prediction`: review the assignment-grade analytics workflow, model comparison, and custom next-inspection risk prediction."
-    )
-
-    st.markdown("**Official Rating Levels and Posters**")
     rating_table = pd.DataFrame(
         [
             {
@@ -2738,36 +2830,60 @@ def build_overview_tab(
             },
         ]
     )
-    st.dataframe(rating_table, use_container_width=True, hide_index=True)
-
-    selected_overview_rating = st.radio(
-        "Select a rating category to view the poster",
-        GRADE_LABEL_OPTIONS_WITH_NA,
-        horizontal=True,
-        key="overview_rating_poster_select",
-    )
     poster_catalog = load_rating_poster_catalog(str(root))
-    poster_item = poster_catalog.get(selected_overview_rating, {})
-    poster_path = clean_text(poster_item.get("path", ""))
-    poster_desc = clean_text(poster_item.get("description", ""))
-    pc1, pc2 = st.columns([1, 2])
-    with pc1:
+    rating_col, poster_col = st.columns([1.45, 0.95], gap="large")
+    with rating_col:
+        st.dataframe(rating_table, use_container_width=True, hide_index=True, height=314)
+        render_takeaway_box(
+            "The public dashboard keeps the county poster logic visible so users can connect a familiar grade label to the inspection severity signals behind it."
+        )
+    with poster_col:
+        selected_overview_rating = st.selectbox(
+            "Poster reference",
+            GRADE_LABEL_OPTIONS_WITH_NA,
+            key="overview_rating_poster_select",
+        )
+        poster_item = poster_catalog.get(selected_overview_rating, {})
+        poster_path = clean_text(poster_item.get("path", ""))
+        poster_desc = clean_text(poster_item.get("description", ""))
         if poster_path and Path(poster_path).exists():
-            st.image(poster_path, caption=f"{selected_overview_rating} poster", width=260)
+            st.image(poster_path, caption=f"{selected_overview_rating} poster", width=190)
         else:
             st.info("Poster image not found in the local `images` directory.")
-    with pc2:
         st.markdown(f"**{selected_overview_rating}**")
         st.write(poster_desc)
 
-    st.markdown("**How risk is classified in this project**")
-    st.write(
-        "This dashboard recalculates food safety ratings from risk level, the most recent routine inspections "
-        "available for that restaurant (up to the official window cap), and the recent closure / return-inspection "
-        "rule shown by King County. The county's published grade is retained separately for audit comparison."
-    )
+    info_cols = st.columns(2, gap="large")
+    with info_cols[0]:
+        render_subsection_label(
+            "How risk is classified in this project",
+            "The dashboard recalculates a comparable risk signal instead of relying only on the published label.",
+        )
+        st.write(
+            "This dashboard recalculates food safety ratings from risk level, the most recent routine inspections "
+            "available for that restaurant (up to the official window cap), and the recent closure / return-inspection "
+            "rule shown by King County. The county's published grade is retained separately for audit comparison."
+        )
+    with info_cols[1]:
+        render_subsection_label(
+            "How the public can participate",
+            "The goal is to turn inspection data into usable decisions instead of a raw archive.",
+        )
+        st.markdown(
+            "1. Check a restaurant before visiting and compare recent inspection history.\n"
+            "2. Restaurant owners can use recurring violation patterns to prioritize fixes.\n"
+            "3. For official details and county resources, use the links below."
+        )
+        st.markdown(
+            "- King County search portal: https://kingcounty.gov/en/dept/dph/health-safety/food-safety/search-restaurant-safety-ratings\n"
+            "- Open data dataset: https://data.kingcounty.gov/Health-Wellness/Food-Establishment-Inspection-Data/f29f-zza5\n"
+            "- API endpoint: https://data.kingcounty.gov/api/v3/views/f29f-zza5/query.json"
+        )
 
-    st.markdown("**Most frequent violation codes (Top 12)**")
+    render_subsection_label(
+        "Most frequent violation codes (Top 12)",
+        "This is the fastest way to see which issues recur across the county and therefore deserve more public attention.",
+    )
     top_codes = (
         violations_df[
             violations_df["violation_code"].astype(str).str.strip().ne("")
@@ -2793,18 +2909,6 @@ def build_overview_tab(
             use_container_width=True,
             hide_index=True,
         )
-
-    st.markdown("**How the public can participate**")
-    st.markdown(
-        "1. Check a restaurant before visiting and compare recent inspection history.\n"
-        "2. Restaurant owners can use recurring violation patterns to prioritize fixes.\n"
-        "3. For official details and county resources, use the links below."
-    )
-    st.markdown(
-        "- King County search portal: https://kingcounty.gov/en/dept/dph/health-safety/food-safety/search-restaurant-safety-ratings\n"
-        "- Open data dataset: https://data.kingcounty.gov/Health-Wellness/Food-Establishment-Inspection-Data/f29f-zza5\n"
-        "- API endpoint: https://data.kingcounty.gov/api/v3/views/f29f-zza5/query.json"
-    )
 
     run_id = clean_text(payload.get("run_id", ""))
     generated_at = clean_text(payload.get("generated_at_utc", ""))
@@ -3075,11 +3179,18 @@ def maybe_render_shap_waterfall(
 
 
 def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violations_df: pd.DataFrame) -> None:
-    st.markdown(f"**{tr('search.step1')}**")
+    render_section_header(
+        "Restaurant Search",
+        "Filter restaurants, compare matched venues, and inspect one establishment's inspection history and remediation detail.",
+        "Public Tool",
+    )
     city_values = ["All"] + sorted(
         [city for city in summary_df["city_display"].dropna().unique() if str(city).strip()]
     )
-    st.caption(tr("search.step1.hint"))
+    render_subsection_label(
+        tr("search.step1"),
+        "Choose a search mode, apply compact filters, and keep the selection stable across reruns.",
+    )
     search_mode = render_search_mode_buttons()
     select_restaurant_message = "Click one restaurant row in Search Results to open detailed results."
     if search_mode in {"map", "hybrid"}:
@@ -3093,11 +3204,8 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
     rating_labels: List[str] = []
 
     if search_mode == "keyword":
-        f1, f2, f3, f4 = st.columns([2.6, 1.0, 1.0, 3.0])
-        query = f1.text_input(
-            "Restaurant / Address / City / Zip",
-            key="search_filter_query",
-        )
+        f1, f2, f3, f4 = st.columns([2.2, 1.0, 0.9, 1.6], gap="small")
+        query = f1.text_input("Restaurant / Address / City / Zip", key="search_filter_query")
         city = f2.selectbox("City", city_values, index=0, key="search_filter_city")
         zip_code = f3.text_input("Zip", key="search_filter_zip")
         rating_labels = f4.multiselect(
@@ -3106,7 +3214,7 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
             key="search_filter_latest_rating",
         )
     elif search_mode == "map":
-        f1, f2 = st.columns([1.2, 2.2])
+        f1, f2 = st.columns([1.1, 1.9], gap="small")
         city = f1.selectbox("City", city_values, index=0, key="search_filter_map_city")
         rating_labels = f2.multiselect(
             "Latest Rating",
@@ -3114,44 +3222,44 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
             key="search_filter_map_latest_rating",
         )
     else:
-        f1, f2 = st.columns([2.3, 2.1])
-        query = f1.text_input(
-            "Restaurant / Address",
-            key="search_filter_combo_query",
-        )
+        f1, f2 = st.columns([1.7, 1.4], gap="small")
+        query = f1.text_input("Restaurant / Address", key="search_filter_combo_query")
         rating_labels = f2.multiselect(
             "Latest Rating",
             options=GRADE_LABEL_OPTIONS_WITH_NA,
             key="search_filter_combo_latest_rating",
         )
 
-    clear_col_left, clear_col_right = st.columns([1, 5])
-    if clear_col_left.button(tr("search.clear_all"), key="search_clear_all_filters"):
-        reset_values = {
-            "search_filter_query": "",
-            "search_filter_city": "All",
-            "search_filter_zip": "",
-            "search_filter_latest_rating": [],
-            "search_filter_map_city": "All",
-            "search_filter_map_latest_rating": [],
-            "search_filter_combo_query": "",
-            "search_filter_combo_latest_rating": [],
-            "search_selected_business_id": "",
-        }
-        for key, value in reset_values.items():
-            st.session_state[key] = value
-        st.session_state["search_map_nonce"] = int(st.session_state.get("search_map_nonce", 0)) + 1
-        st.session_state["search_results_table_nonce"] = int(
-            st.session_state.get("search_results_table_nonce", 0)
-        ) + 1
-        for session_key in list(st.session_state.keys()):
-            if (
-                session_key.startswith("search_selected_event_id_")
-                or session_key.startswith("inspection_history_")
-                or session_key.startswith("search_history_")
-            ):
-                st.session_state.pop(session_key, None)
-        st.rerun()
+    controls_meta, controls_action = st.columns([4.6, 1.0], gap="small")
+    with controls_meta:
+        st.caption(tr("search.step1.hint"))
+    with controls_action:
+        if st.button(tr("search.clear_all"), key="search_clear_all_filters", use_container_width=True):
+            reset_values = {
+                "search_filter_query": "",
+                "search_filter_city": "All",
+                "search_filter_zip": "",
+                "search_filter_latest_rating": [],
+                "search_filter_map_city": "All",
+                "search_filter_map_latest_rating": [],
+                "search_filter_combo_query": "",
+                "search_filter_combo_latest_rating": [],
+                "search_selected_business_id": "",
+            }
+            for key, value in reset_values.items():
+                st.session_state[key] = value
+            st.session_state["search_map_nonce"] = int(st.session_state.get("search_map_nonce", 0)) + 1
+            st.session_state["search_results_table_nonce"] = int(
+                st.session_state.get("search_results_table_nonce", 0)
+            ) + 1
+            for session_key in list(st.session_state.keys()):
+                if (
+                    session_key.startswith("search_selected_event_id_")
+                    or session_key.startswith("inspection_history_")
+                    or session_key.startswith("search_history_")
+                ):
+                    st.session_state.pop(session_key, None)
+            st.rerun()
 
     filtered = filter_businesses(summary_df, query, city, zip_code, rating_labels)
     filter_signature = "|".join(
@@ -3166,17 +3274,75 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
     )
     filter_signature_hash = str(abs(hash(filter_signature)))
 
+    sort_options = [
+        ("Restaurant", "display_name"),
+        ("Address", "full_address_clean"),
+        ("City", "city_display"),
+        ("Zip", "zip_code"),
+    ]
+    label_to_field = {label: field for label, field in sort_options}
+    field_to_label = {field: label for label, field in sort_options}
+    current_sort_field = clean_text(st.session_state.get("search_sort_field", "display_name"))
+    if current_sort_field not in field_to_label:
+        current_sort_field = "display_name"
+        st.session_state["search_sort_field"] = current_sort_field
+    current_sort_label = field_to_label.get(current_sort_field, "Restaurant")
+    current_sort_order = "Ascending" if bool(st.session_state.get("search_sort_asc", True)) else "Descending"
+
+    render_step_separator()
+    render_subsection_label(
+        tr("search.step2"),
+        "Results and map selection stay in the same stage so the user can scan, sort, and pick one venue quickly.",
+    )
+    top_meta_left, top_meta_mid, top_meta_right = st.columns([1.0, 1.0, 2.4], gap="small")
+    selected_sort_label = top_meta_left.selectbox(
+        "Sort field",
+        [label for label, _ in sort_options],
+        index=[label for label, _ in sort_options].index(current_sort_label),
+        key="search_sort_field_select",
+    )
+    selected_sort_order = top_meta_mid.selectbox(
+        "Order",
+        ["Ascending", "Descending"],
+        index=0 if current_sort_order == "Ascending" else 1,
+        key="search_sort_order_select",
+    )
+    with top_meta_right:
+        st.caption(
+            f"Matched restaurants: {len(filtered):,}. "
+            "Select a row to pin it to the top and unlock the detail workflow below."
+        )
+    st.session_state["search_sort_field"] = label_to_field[selected_sort_label]
+    st.session_state["search_sort_asc"] = selected_sort_order == "Ascending"
+    sort_field = st.session_state["search_sort_field"]
+    sort_asc = bool(st.session_state["search_sort_asc"])
+    if sort_field in filtered.columns:
+        filtered = filtered.sort_values(by=[sort_field], ascending=[sort_asc], na_position="last")
+
+    pinned_selected_business_id = clean_text(st.session_state.get("search_selected_business_id", ""))
+    if pinned_selected_business_id:
+        pinned_mask = filtered["business_id"].astype(str).str.strip() == pinned_selected_business_id
+        if pinned_mask.any():
+            filtered = pd.concat(
+                [filtered[pinned_mask], filtered[~pinned_mask]],
+                ignore_index=True,
+            )
+
+    if filtered.empty:
+        st.info("No matches found. Try a different keyword or relax filters.")
+        return
+
     if search_mode in {"map", "hybrid"}:
         map_df = filtered.copy()
         map_df["latitude"] = pd.to_numeric(map_df["latitude"], errors="coerce")
         map_df["longitude"] = pd.to_numeric(map_df["longitude"], errors="coerce")
         map_df = map_df.dropna(subset=["latitude", "longitude"]).reset_index(drop=True)
-        st.caption(tr("search.map.hint"))
         if not PLOTLY_AVAILABLE:
             st.info("Plotly is not installed in this environment, so map search is unavailable.")
         elif map_df.empty:
             st.info("No matched restaurants with valid coordinates are available for map search.")
         else:
+            st.caption(tr("search.map.hint"))
             figure = build_search_map_figure(
                 map_df,
                 selected_business_id=clean_text(st.session_state.get("search_selected_business_id", "")),
@@ -3210,69 +3376,6 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
                     st.session_state.get("search_results_table_nonce", 0)
                 ) + 1
 
-    sort_options = [
-        ("Restaurant", "display_name"),
-        ("Address", "full_address_clean"),
-        ("City", "city_display"),
-        ("Zip", "zip_code"),
-    ]
-    if (
-        "search_sort_field" not in st.session_state
-        or st.session_state.get("search_sort_field") not in [item[1] for item in sort_options]
-    ):
-        st.session_state["search_sort_field"] = "display_name"
-        st.session_state["search_sort_asc"] = True
-
-    st.markdown("**Sort Results**")
-    sort_row = st.columns(len(sort_options))
-    for idx, (label, field_key) in enumerate(sort_options):
-        col = sort_row[idx]
-        with col:
-            st.caption(label)
-            up_col, down_col = st.columns(2)
-            if up_col.button("▲", key=f"sort_up_{field_key}"):
-                st.session_state["search_sort_field"] = field_key
-                st.session_state["search_sort_asc"] = True
-            if down_col.button("▼", key=f"sort_down_{field_key}"):
-                st.session_state["search_sort_field"] = field_key
-                st.session_state["search_sort_asc"] = False
-            if st.session_state["search_sort_field"] == field_key:
-                indicator = "ASC" if st.session_state["search_sort_asc"] else "DESC"
-                st.caption(f"`{indicator}`")
-            else:
-                st.caption("`-`")
-
-    sort_field = st.session_state.get("search_sort_field", "display_name")
-    sort_asc = bool(st.session_state.get("search_sort_asc", False))
-    if sort_field in filtered.columns:
-        filtered = filtered.sort_values(
-            by=[sort_field],
-            ascending=[sort_asc],
-            na_position="last",
-        )
-
-    pinned_selected_business_id = clean_text(st.session_state.get("search_selected_business_id", ""))
-    if pinned_selected_business_id:
-        pinned_mask = filtered["business_id"].astype(str).str.strip() == pinned_selected_business_id
-        if pinned_mask.any():
-            filtered = pd.concat(
-                [filtered[pinned_mask], filtered[~pinned_mask]],
-                ignore_index=True,
-            )
-
-    render_step_separator()
-    st.markdown(f"**{tr('search.step2')}**")
-    sort_label_map = {key: label for label, key in sort_options}
-    st.write(
-        f"Matched restaurants: {len(filtered):,} | "
-        f"Sorted by: {sort_label_map.get(sort_field, sort_field)} "
-        f"({'ASC' if sort_asc else 'DESC'})"
-    )
-
-    if filtered.empty:
-        st.info("No matches found. Try a different keyword or relax filters.")
-        return
-
     filtered_reset = filtered.reset_index(drop=True).copy()
     pinned_feedback = ""
     if pinned_selected_business_id and not filtered_reset.empty:
@@ -3286,12 +3389,7 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
         st.caption(pinned_feedback)
 
     search_view = filtered_reset[
-        [
-            "display_name",
-            "full_address_clean",
-            "city_display",
-            "zip_code",
-        ]
+        ["display_name", "full_address_clean", "city_display", "zip_code"]
     ].rename(
         columns={
             "display_name": "Restaurant",
@@ -3303,7 +3401,7 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
     if pinned_feedback:
         def highlight_selected_row(row: pd.Series) -> List[str]:
             if int(row.name) == 0:
-                styles = ["background-color: #e6f4ff; font-weight: 700;" for _ in row]
+                styles = ["background-color: #eefafc; font-weight: 700;" for _ in row]
                 if styles:
                     styles[0] += " border-left: 4px solid #0b7285;"
                 return styles
@@ -3321,14 +3419,11 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
         on_select="rerun",
         selection_mode="single-row",
         key=f"search_results_table_select_{filter_signature_hash}_{results_table_nonce}",
+        height=315,
     )
 
     selected_idx: Optional[int] = None
-    if (
-        hasattr(result_selection, "selection")
-        and result_selection.selection
-        and result_selection.selection.rows
-    ):
+    if hasattr(result_selection, "selection") and result_selection.selection and result_selection.selection.rows:
         selected_idx = int(result_selection.selection.rows[0])
     else:
         previous_id = clean_text(st.session_state.get("search_selected_business_id", ""))
@@ -3352,12 +3447,17 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
     st.session_state["search_selected_business_id"] = selected_business_id
     selected_summary_row = filtered_reset.iloc[selected_idx]
 
-    st.markdown("---")
     biz_events = events_df[events_df["business_id"] == selected_business_id].copy()
     biz_events = biz_events.sort_values(by="inspection_date_dt", ascending=False, na_position="last")
     if biz_events.empty:
         st.info("No inspection history is available for the selected restaurant.")
         return
+
+    render_step_separator()
+    render_subsection_label(
+        "Selected restaurant snapshot",
+        "The top card keeps the current poster, latest inspection signals, and score trend in one compact block.",
+    )
 
     biz_violations = violations_df[violations_df["business_id"] == selected_business_id].copy()
     has_violation = (
@@ -3373,7 +3473,6 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
         na_position="last",
     )
 
-    c_left, c_right = st.columns([1, 2])
     latest_row = biz_events.iloc[0]
     latest_rating = clean_text(selected_summary_row.get("latest_rating", "")) or RATING_NOT_AVAILABLE_LABEL
     latest_score = latest_row.get("inspection_score")
@@ -3392,13 +3491,19 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
     avg_red_title = format_detail_card_avg_red_title(latest_risk_level)
     latest_score_text = "-" if pd.isna(latest_score) else f"{float(latest_score):.0f}"
     latest_avg_red_text = "-" if pd.isna(latest_avg_red) else f"{float(latest_avg_red):.2f}"
-    with c_left:
+
+    snapshot_left, snapshot_right = st.columns([0.7, 1.8], gap="large")
+    with snapshot_left:
         if selected_poster_path and Path(selected_poster_path).exists():
-            st.image(selected_poster_path, caption=f"{latest_rating} poster", width=240)
+            st.image(selected_poster_path, caption=f"{latest_rating} poster", width=176)
         else:
             st.info("Poster image not found in the local `images` directory.")
-    with c_right:
-        row0_col1, row0_col2 = st.columns(2)
+        st.caption(
+            f"Selected venue: {clean_text(selected_summary_row.get('display_name', '')) or '-'} | "
+            f"Sorted by {field_to_label.get(sort_field, sort_field)} ({'ASC' if sort_asc else 'DESC'})"
+        )
+    with snapshot_right:
+        row0_col1, row0_col2, row0_col3 = st.columns(3, gap="small")
         with row0_col1:
             render_detail_info_card(
                 "Restaurant Name",
@@ -3406,33 +3511,31 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
             )
         with row0_col2:
             render_detail_info_card(
-                "Restaurant Address",
-                clean_text(selected_summary_row.get("full_address_clean", "")) or "-",
-            )
-
-        row1_col1, row1_col2 = st.columns(2)
-        with row1_col1:
-            render_detail_info_card(
                 "Latest Inspection Date",
                 clean_text(latest_row.get("inspection_date", "")) or "-",
             )
-        with row1_col2:
+        with row0_col3:
             render_detail_info_card("Latest Inspection Score", latest_score_text)
 
-        row2_col1, row2_col2 = st.columns(2)
-        with row2_col1:
+        row1_col1, row1_col2, row1_col3 = st.columns(3, gap="small")
+        with row1_col1:
+            render_detail_info_card(
+                "Restaurant Address",
+                clean_text(selected_summary_row.get("full_address_clean", "")) or "-",
+            )
+        with row1_col2:
             render_detail_info_card("Inspection Count", f"{len(biz_events):,}")
-        with row2_col2:
+        with row1_col3:
             render_detail_info_card(avg_red_title, latest_avg_red_text)
 
-        row3_col1, row3_col2 = st.columns(2)
-        with row3_col1:
+        row2_col1, row2_col2 = st.columns(2, gap="small")
+        with row2_col1:
             render_detail_info_card(
                 "Risk Category",
                 latest_risk_card_value,
                 bullets=risk_meta.get("bullets", []),
             )
-        with row3_col2:
+        with row2_col2:
             render_detail_info_card("Food Safety Rating", latest_rating, note=rating_note)
 
     score_plot_df = biz_events[["inspection_date_dt", "inspection_score"]].dropna(
@@ -3449,8 +3552,11 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
         st.info("No score history available for plotting.")
 
     render_step_separator()
-    st.markdown(f"**{tr('search.step3')}**")
-    h1, h2, h3, h4 = st.columns([1.15, 1.15, 1.5, 0.8])
+    render_subsection_label(
+        tr("search.step3"),
+        "Filter the selected restaurant's inspection history, then click one row to open that day's violations and remediation guidance.",
+    )
+    h1, h2, h3, h4 = st.columns([1.05, 1.05, 1.45, 0.85], gap="small")
     history_valid_dates = biz_events["inspection_date_dt"].dropna()
     min_hist_date = history_valid_dates.min().date() if not history_valid_dates.empty else None
     max_hist_date = history_valid_dates.max().date() if not history_valid_dates.empty else None
@@ -3478,13 +3584,11 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
         key=f"search_history_type_{selected_business_id}",
     )
     h4.write("")
-    h4.write("")
-    clear_history_filters = h4.button(
+    if h4.button(
         "Clear filters",
         key=f"search_history_clear_{selected_business_id}",
         use_container_width=True,
-    )
-    if clear_history_filters:
+    ):
         if min_hist_date and max_hist_date:
             st.session_state[f"search_history_start_{selected_business_id}"] = min_hist_date
             st.session_state[f"search_history_end_{selected_business_id}"] = max_hist_date
@@ -3539,15 +3643,11 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
         on_select="rerun",
         selection_mode="single-row",
         key=f"inspection_history_{selected_business_id}",
-        height=320,
+        height=286,
     )
 
     selected_row_idx: Optional[int] = None
-    if (
-        hasattr(inspection_selection, "selection")
-        and inspection_selection.selection
-        and inspection_selection.selection.rows
-    ):
+    if hasattr(inspection_selection, "selection") and inspection_selection.selection and inspection_selection.selection.rows:
         selected_row_idx = int(inspection_selection.selection.rows[0])
     else:
         selected_event_state_key = f"search_selected_event_id_{selected_business_id}"
@@ -3568,9 +3668,10 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
     st.session_state[f"search_selected_event_id_{selected_business_id}"] = selected_event_id
 
     render_step_separator()
-    st.markdown(f"**{tr('search.step4')}**")
-    st.caption(f"Selected inspection: {selected_event_date} | ID: {selected_event_id}")
-
+    render_subsection_label(
+        tr("search.step4"),
+        f"Selected inspection: {selected_event_date} | ID: {selected_event_id}",
+    )
     selected_violations = biz_violations[
         biz_violations["inspection_event_id"].astype(str).str.strip() == selected_event_id
     ].copy()
@@ -3606,7 +3707,7 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
             ),
             use_container_width=True,
             hide_index=True,
-            height=320,
+            height=290,
         )
 
 
@@ -3616,7 +3717,11 @@ def build_summary_tab(
     payload: Dict[str, str],
     root: Path,
 ) -> None:
-    st.subheader(tr("summary.header"))
+    render_section_header(
+        tr("summary.header"),
+        "Multi-role historical views for consumers, owners, regulators, and county-quality auditing.",
+        "Public Release",
+    )
     st.caption(tr("summary.role_hint"))
     st.caption(tr("summary.risk_hint"))
 
@@ -4877,6 +4982,26 @@ def render_essay_card(title: str, body: str) -> None:
     )
 
 
+def render_section_header(title: str, subtitle: str, kicker: str = "") -> None:
+    kicker_html = f"<div class='section-kicker'>{escape(kicker)}</div>" if kicker else ""
+    st.markdown(
+        (
+            "<div class='section-hero'>"
+            f"{kicker_html}"
+            f"<div class='section-title'>{escape(title)}</div>"
+            f"<div class='section-subtitle'>{escape(subtitle)}</div>"
+            "</div>"
+        ),
+        unsafe_allow_html=True,
+    )
+
+
+def render_subsection_label(title: str, hint: str = "") -> None:
+    st.markdown(f"<div class='subsection-label'>{escape(title)}</div>", unsafe_allow_html=True)
+    if hint:
+        st.markdown(f"<div class='panel-hint'>{escape(hint)}</div>", unsafe_allow_html=True)
+
+
 def render_takeaway_box(text: str) -> None:
     st.markdown(
         (
@@ -4923,6 +5048,11 @@ def build_executive_summary_tab(
     summary_df: pd.DataFrame,
     root: Path,
 ) -> None:
+    render_section_header(
+        "Executive Summary",
+        "Owner-facing framing of the data asset, prediction target, business question, and the analysis path used in the assignment workflow.",
+        "Assignment Workflow",
+    )
     manifest_bundle = load_predict_manifest(str(root))
     if not manifest_bundle.get("available", False):
         st.warning(manifest_bundle.get("message", "Predict manifest not available."))
@@ -4958,31 +5088,41 @@ def build_executive_summary_tab(
     k3.metric("Model rows", f"{len(model_dataset):,}")
     k4.metric("Restaurants", f"{summary_df['business_id'].nunique():,}")
 
-    render_essay_card(
-        "Dataset and database purpose",
-        "This project uses King County restaurant inspection records to turn public food-safety data into an owner-facing decision tool. "
-        "The database combines an inspection-event table, which records each inspection visit and its score, grade, result, and risk signals, with a violation-level table that stores individual findings, point severity, and remediation guidance.",
+    render_subsection_label(
+        "Project framing",
+        "This section should read like a concise business brief before the reader enters the descriptive, modeling, and explainability tabs.",
     )
-    render_essay_card(
-        "Prediction target",
-        "The prediction target is target_next_high_risk: whether the same restaurant's next recorded inspection falls into the high-risk class. "
-        "In this project, an inspection is treated as high risk when the published grade is Needs to Improve or when red points reach 25 or more.",
-    )
-    render_essay_card(
-        "Why this matters",
-        "For a restaurant owner, the value is operational rather than academic. If the latest inspection profile can estimate next-inspection risk early enough, the owner can focus on the controllable signals most likely to trigger a poor next outcome before the next county visit happens.",
-    )
+    intro_row1 = st.columns(2, gap="large")
+    with intro_row1[0]:
+        render_essay_card(
+            "Dataset and database purpose",
+            "This project uses King County restaurant inspection records to turn public food-safety data into an owner-facing decision tool. The database combines an inspection-event table, which records each inspection visit and its score, grade, result, and risk signals, with a violation-level table that stores individual findings, point severity, and remediation guidance.",
+        )
+    with intro_row1[1]:
+        render_essay_card(
+            "Prediction target",
+            "The prediction target is target_next_high_risk: whether the same restaurant's next recorded inspection falls into the high-risk class. In this project, an inspection is treated as high risk when the published grade is Needs to Improve or when red points reach 25 or more.",
+        )
+    intro_row2 = st.columns(2, gap="large")
+    with intro_row2[0]:
+        render_essay_card(
+            "Why this matters",
+            "For a restaurant owner, the value is operational rather than academic. If the latest inspection profile can estimate next-inspection risk early enough, the owner can focus on the controllable signals most likely to trigger a poor next outcome before the next county visit happens.",
+        )
 
     if not best_row.empty:
         row = best_row.iloc[0]
-        render_essay_card(
-            "Approach and key findings",
-            f"The analysis converts repeated inspections into a next-inspection prediction dataset with {len(MODEL_NUMERIC_FEATURES)} numeric features and {len(MODEL_CATEGORICAL_FEATURES)} categorical features. "
-            f"Using the current saved artifacts, {best_model_name} is the best overall model with F1={float(row['F1']):.4f} and ROC_AUC={float(row['ROC_AUC']):.4f}; the recurring global signals are {top_signals}.",
-        )
+        with intro_row2[1]:
+            render_essay_card(
+                "Approach and key findings",
+                f"The analysis converts repeated inspections into a next-inspection prediction dataset with {len(MODEL_NUMERIC_FEATURES)} numeric features and {len(MODEL_CATEGORICAL_FEATURES)} categorical features. Using the current saved artifacts, {best_model_name} is the best overall model with F1={float(row['F1']):.4f} and ROC_AUC={float(row['ROC_AUC']):.4f}; the recurring global signals are {top_signals}.",
+            )
 
-    st.markdown("**Database structure and business question**")
-    c1, c2 = st.columns(2)
+    render_subsection_label(
+        "Database structure and business question",
+        "These two tables are the backbone of the homework story: one defines the sequence of inspections, the other explains what was found and how to respond.",
+    )
+    c1, c2 = st.columns(2, gap="large")
     with c1:
         render_essay_card(
             "inspection_event table",
@@ -4994,16 +5134,21 @@ def build_executive_summary_tab(
             "One row represents one violation finding linked back to an inspection event. This table explains what went wrong, how severe it was, and what remediation action category or priority should be considered next.",
         )
 
-    st.markdown("**Homework framing**")
-    st.write(
-        "Primary question: "
-        f"**{HOMEWORK_OWNER_QUESTION}**"
-    )
-    st.write(
-        "The descriptive tab tests whether the latest inspection profile already contains visible warning signals. "
-        "The model tab measures whether multiple algorithms can convert those signals into useful predictive performance. "
-        "The explainability tab then shows which factors move one restaurant's predicted risk up or down for a decision-maker."
-    )
+    framing_col, stats_col = st.columns([1.35, 1.0], gap="large")
+    with framing_col:
+        render_subsection_label(
+            "Homework framing",
+            "The assignment question has to support descriptive analysis, model comparison, and local explanation in a single workflow.",
+        )
+        st.write(
+            "Primary question: "
+            f"**{HOMEWORK_OWNER_QUESTION}**"
+        )
+        st.write(
+            "The descriptive tab tests whether the latest inspection profile already contains visible warning signals. "
+            "The model tab measures whether multiple algorithms can convert those signals into useful predictive performance. "
+            "The explainability tab then shows which factors move one restaurant's predicted risk up or down for a decision-maker."
+        )
 
     stats_df = pd.DataFrame(
         [
@@ -5014,7 +5159,14 @@ def build_executive_summary_tab(
         ],
         columns=["Item", "Value"],
     )
-    st.dataframe(stats_df, use_container_width=True, hide_index=True)
+    with stats_col:
+        render_subsection_label("Coverage and feature scope")
+        st.dataframe(stats_df, use_container_width=True, hide_index=True, height=210)
+
+    render_subsection_label(
+        "Field dictionary",
+        "The full field map is kept in expanders so the section stays readable while still covering the grading requirement.",
+    )
     render_homework_field_dictionary()
 
 
@@ -5024,90 +5176,114 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
         st.info("No data available for descriptive analytics.")
         return
 
+    render_section_header(
+        "Descriptive Analytics",
+        "Compact evidence for whether the current inspection profile already contains visible signals of future high-risk outcomes.",
+        "Assignment Workflow",
+    )
     positive_rate = float(model_dataset["target_next_high_risk"].mean())
+    d1, d2, d3, d4 = st.columns(4)
+    d1.metric("Model rows", f"{len(model_dataset):,}")
+    d2.metric("Restaurants", f"{events_df['business_id'].nunique():,}")
+    d3.metric("Positive class rate", f"{positive_rate:.1%}")
+    d4.metric("Model features", f"{len(MODEL_ALL_FEATURES)}")
+    render_subsection_label(
+        "Dataset introduction",
+        "The descriptive tab should establish dataset size, target balance, and the main warning signals before model comparison begins.",
+    )
     render_essay_card(
         "Dataset introduction",
-        f"The modeling table contains {len(model_dataset):,} ordered inspection records drawn from {events_df['business_id'].nunique():,} restaurants. "
-        f"It predicts the next inspection's high-risk flag from the current inspection profile using {len(MODEL_ALL_FEATURES)} features ({len(MODEL_NUMERIC_FEATURES)} numeric and {len(MODEL_CATEGORICAL_FEATURES)} categorical).",
+        f"The modeling table contains {len(model_dataset):,} ordered inspection records drawn from {events_df['business_id'].nunique():,} restaurants. It predicts the next inspection's high-risk flag from the current inspection profile using {len(MODEL_ALL_FEATURES)} features ({len(MODEL_NUMERIC_FEATURES)} numeric and {len(MODEL_CATEGORICAL_FEATURES)} categorical).",
     )
     render_takeaway_box(
         "The data is large enough for a meaningful classification workflow, but the target is imbalanced, so F1, recall, ROC-AUC, and class-aware modeling choices matter more than raw accuracy alone."
     )
 
-    st.markdown("**Target distribution of target_next_high_risk**")
+    render_subsection_label(
+        "Signal comparison charts",
+        "These plots are intentionally smaller and paired so the user can scan the full narrative without endless vertical scrolling.",
+    )
     target_counts = (
         model_dataset["target_next_high_risk"]
         .value_counts()
         .reindex([0, 1], fill_value=0)
     )
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.bar(
-        ["Low-risk next inspection", "High-risk next inspection"],
-        target_counts.values,
-        color=["#8cd3dd", "#0d8a98"],
-    )
-    ax.set_ylabel("Inspection rows")
-    ax.set_title("Target distribution")
-    st.pyplot(fig, use_container_width=True)
-    plt.close(fig)
-    st.caption(
-        "Most inspection rows lead to a low-risk next inspection, while only a small minority lead to a future high-risk outcome. "
-        "That imbalance is exactly why this project emphasizes class-aware metrics, uses balanced or tuned models, and avoids reading accuracy as the primary quality signal."
-    )
-    render_takeaway_box(
-        f"Only about {positive_rate:.1%} of rows are positive, so the modeling problem is detection of a relatively rare but operationally important failure state."
-    )
 
     low_score = model_dataset.loc[model_dataset["target_next_high_risk"] == 0, "inspection_score"].dropna()
     high_score = model_dataset.loc[model_dataset["target_next_high_risk"] == 1, "inspection_score"].dropna()
-    st.markdown("**Inspection score by future high-risk target**")
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.boxplot([low_score, high_score], labels=["Next low risk", "Next high risk"], showfliers=False)
-    ax.set_ylabel("Inspection score")
-    ax.set_title("Current score vs. future target")
-    st.pyplot(fig, use_container_width=True)
-    plt.close(fig)
-    st.caption(
-        "The high-risk-next group has a clearly worse current inspection score distribution, which suggests the current inspection already contains usable early warning information. "
-        "The distributions still overlap materially, so a single cut-off score is not enough; the prediction task needs multiple variables working together."
-    )
-    render_takeaway_box(
-        "Inspection score is informative, but not decisive on its own. Owners should treat it as one signal in a broader risk profile rather than as a standalone decision rule."
-    )
 
     low_red = model_dataset.loc[model_dataset["target_next_high_risk"] == 0, "red_points_total"].dropna()
     high_red = model_dataset.loc[model_dataset["target_next_high_risk"] == 1, "red_points_total"].dropna()
-    st.markdown("**Red points by future high-risk target**")
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.boxplot([low_red, high_red], labels=["Next low risk", "Next high risk"], showfliers=False)
-    ax.set_ylabel("Red points")
-    ax.set_title("Current red points vs. future target")
-    st.pyplot(fig, use_container_width=True)
-    plt.close(fig)
-    st.caption(
-        "Red points are much more concentrated in the group that later returns as high risk, which is consistent with their role as a high-severity inspection signal. "
-        "This is useful for restaurant owners because red points are directly actionable: reducing them should improve both current compliance and future inspection resilience."
-    )
-    render_takeaway_box(
-        "Red-point severity is one of the strongest warning indicators in the dataset and should be the first operational triage signal for a restaurant owner."
-    )
 
     low_viol = model_dataset.loc[model_dataset["target_next_high_risk"] == 0, "violation_count_total"].dropna()
     high_viol = model_dataset.loc[model_dataset["target_next_high_risk"] == 1, "violation_count_total"].dropna()
-    st.markdown("**Violation count by future high-risk target**")
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.boxplot([low_viol, high_viol], labels=["Next low risk", "Next high risk"], showfliers=False)
-    ax.set_ylabel("Violation count")
-    ax.set_title("Current violation count vs. future target")
-    st.pyplot(fig, use_container_width=True)
-    plt.close(fig)
-    st.caption(
-        "Inspection rows that later lead to a high-risk next visit also tend to carry more total violations in the current visit. "
-        "This suggests that repeated process-control weakness, not just one extreme finding, is part of the risk pattern captured by the model."
-    )
-    render_takeaway_box(
-        "A high volume of findings is itself a signal that the business may not have stabilized its food-safety process before the next inspection."
-    )
+    pair_top_left, pair_top_right = st.columns(2, gap="large")
+    with pair_top_left:
+        st.markdown("**Target distribution of target_next_high_risk**")
+        fig, ax = plt.subplots(figsize=(5.4, 3.2))
+        ax.bar(
+            ["Low-risk next inspection", "High-risk next inspection"],
+            target_counts.values,
+            color=["#8cd3dd", "#0d8a98"],
+        )
+        ax.set_ylabel("Inspection rows")
+        ax.set_title("Target distribution")
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+        st.caption(
+            "Most inspection rows lead to a low-risk next inspection, while only a small minority lead to a future high-risk outcome. "
+            "That imbalance is exactly why this project emphasizes class-aware metrics, uses balanced or tuned models, and avoids reading accuracy as the primary quality signal."
+        )
+        render_takeaway_box(
+            f"Only about {positive_rate:.1%} of rows are positive, so the modeling problem is detection of a relatively rare but operationally important failure state."
+        )
+    with pair_top_right:
+        st.markdown("**Inspection score by future high-risk target**")
+        fig, ax = plt.subplots(figsize=(5.4, 3.2))
+        ax.boxplot([low_score, high_score], tick_labels=["Next low risk", "Next high risk"], showfliers=False)
+        ax.set_ylabel("Inspection score")
+        ax.set_title("Current score vs. future target")
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+        st.caption(
+            "The high-risk-next group has a clearly worse current inspection score distribution, which suggests the current inspection already contains usable early warning information. "
+            "The distributions still overlap materially, so a single cut-off score is not enough; the prediction task needs multiple variables working together."
+        )
+        render_takeaway_box(
+            "Inspection score is informative, but not decisive on its own. Owners should treat it as one signal in a broader risk profile rather than as a standalone decision rule."
+        )
+
+    pair_mid_left, pair_mid_right = st.columns(2, gap="large")
+    with pair_mid_left:
+        st.markdown("**Red points by future high-risk target**")
+        fig, ax = plt.subplots(figsize=(5.4, 3.2))
+        ax.boxplot([low_red, high_red], tick_labels=["Next low risk", "Next high risk"], showfliers=False)
+        ax.set_ylabel("Red points")
+        ax.set_title("Current red points vs. future target")
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+        st.caption(
+            "Red points are much more concentrated in the group that later returns as high risk, which is consistent with their role as a high-severity inspection signal. "
+            "This is useful for restaurant owners because red points are directly actionable: reducing them should improve both current compliance and future inspection resilience."
+        )
+        render_takeaway_box(
+            "Red-point severity is one of the strongest warning indicators in the dataset and should be the first operational triage signal for a restaurant owner."
+        )
+    with pair_mid_right:
+        st.markdown("**Violation count by future high-risk target**")
+        fig, ax = plt.subplots(figsize=(5.4, 3.2))
+        ax.boxplot([low_viol, high_viol], tick_labels=["Next low risk", "Next high risk"], showfliers=False)
+        ax.set_ylabel("Violation count")
+        ax.set_title("Current violation count vs. future target")
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+        st.caption(
+            "Inspection rows that later lead to a high-risk next visit also tend to carry more total violations in the current visit. "
+            "This suggests that repeated process-control weakness, not just one extreme finding, is part of the risk pattern captured by the model."
+        )
+        render_takeaway_box(
+            "A high volume of findings is itself a signal that the business may not have stabilized its food-safety process before the next inspection."
+        )
 
     result_rate = (
         model_dataset.groupby("inspection_result", dropna=False)
@@ -5115,24 +5291,26 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
         .reset_index()
     )
     result_rate = result_rate[result_rate["rows"] >= 100].sort_values("high_risk_rate", ascending=False).head(10)
+    pair_bottom_left, pair_bottom_right = st.columns(2, gap="large")
     if not result_rate.empty:
-        st.markdown("**Inspection result by future high-risk rate**")
-        fig, ax = plt.subplots(figsize=(8, 4))
-        ax.bar(result_rate["inspection_result"], result_rate["high_risk_rate"], color="#0d8a98")
-        ax.set_ylabel("Future high-risk rate")
-        ax.set_xlabel("Current inspection result")
-        ax.set_title("Outcome categories and future risk")
-        ax.tick_params(axis="x", rotation=35)
-        ax.set_ylim(0, min(1.0, float(result_rate["high_risk_rate"].max()) * 1.15 + 0.02))
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-        st.caption(
-            "Not all published inspection results carry the same downstream implication. "
-            "Outcome categories such as unsatisfactory or return-oriented results show materially higher future high-risk rates, which supports using the categorical outcome itself in the model."
-        )
-        render_takeaway_box(
-            "The current inspection result encodes process state. Owners should treat an unsatisfactory or return-oriented status as a strong signal that next-visit risk remains elevated."
-        )
+        with pair_bottom_left:
+            st.markdown("**Inspection result by future high-risk rate**")
+            fig, ax = plt.subplots(figsize=(5.7, 3.4))
+            ax.bar(result_rate["inspection_result"], result_rate["high_risk_rate"], color="#0d8a98")
+            ax.set_ylabel("Future high-risk rate")
+            ax.set_xlabel("Current inspection result")
+            ax.set_title("Outcome categories and future risk")
+            ax.tick_params(axis="x", rotation=35)
+            ax.set_ylim(0, min(1.0, float(result_rate["high_risk_rate"].max()) * 1.15 + 0.02))
+            st.pyplot(fig, use_container_width=True)
+            plt.close(fig)
+            st.caption(
+                "Not all published inspection results carry the same downstream implication. "
+                "Outcome categories such as unsatisfactory or return-oriented results show materially higher future high-risk rates, which supports using the categorical outcome itself in the model."
+            )
+            render_takeaway_box(
+                "The current inspection result encodes process state. Owners should treat an unsatisfactory or return-oriented status as a strong signal that next-visit risk remains elevated."
+            )
 
     city_rate = (
         model_dataset.groupby("city_canonical", dropna=False)
@@ -5141,23 +5319,28 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
     )
     city_rate = city_rate[city_rate["rows"] >= 200].sort_values("high_risk_rate", ascending=False).head(12)
     if not city_rate.empty:
-        st.markdown("**City-level future high-risk pattern**")
-        fig, ax = plt.subplots(figsize=(8, 4))
-        ax.bar(city_rate["city_canonical"].map(format_city_name), city_rate["high_risk_rate"], color="#27c2a8")
-        ax.set_ylabel("Future high-risk rate")
-        ax.set_xlabel("City")
-        ax.set_title("Higher-volume cities by future high-risk rate")
-        ax.tick_params(axis="x", rotation=35)
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-        st.caption(
-            "Even after requiring a reasonable number of rows per city, future high-risk rates are not uniform across locations. "
-            "That pattern does not mean geography alone causes risk, but it indicates that city context may proxy for operating environment, restaurant mix, or enforcement intensity."
-        )
-        render_takeaway_box(
-            "Location is a useful context feature, but it should be interpreted as environment and mix, not as a causal explanation by itself."
-        )
+        with pair_bottom_right:
+            st.markdown("**City-level future high-risk pattern**")
+            fig, ax = plt.subplots(figsize=(5.7, 3.4))
+            ax.bar(city_rate["city_canonical"].map(format_city_name), city_rate["high_risk_rate"], color="#27c2a8")
+            ax.set_ylabel("Future high-risk rate")
+            ax.set_xlabel("City")
+            ax.set_title("Higher-volume cities by future high-risk rate")
+            ax.tick_params(axis="x", rotation=35)
+            st.pyplot(fig, use_container_width=True)
+            plt.close(fig)
+            st.caption(
+                "Even after requiring a reasonable number of rows per city, future high-risk rates are not uniform across locations. "
+                "That pattern does not mean geography alone causes risk, but it indicates that city context may proxy for operating environment, restaurant mix, or enforcement intensity."
+            )
+            render_takeaway_box(
+                "Location is a useful context feature, but it should be interpreted as environment and mix, not as a causal explanation by itself."
+            )
 
+    render_subsection_label(
+        "Correlation structure",
+        "The heatmap stays full-width because it is a cross-signal reference rather than a single-variable chart.",
+    )
     st.markdown("**Correlation heatmap**")
     corr_cols = [
         "inspection_score",
@@ -5169,7 +5352,7 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
         "target_next_high_risk",
     ]
     corr_df = model_dataset[corr_cols].corr(numeric_only=True)
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig, ax = plt.subplots(figsize=(6.6, 4.9))
     im = ax.imshow(corr_df.values, vmin=-1, vmax=1, cmap="coolwarm")
     ax.set_xticks(range(len(corr_df.columns)))
     ax.set_yticks(range(len(corr_df.columns)))
@@ -5202,6 +5385,11 @@ def build_model_performance_tab(root: Path) -> None:
         st.warning("No trained models found in manifest.")
         return
 
+    render_section_header(
+        "Model Performance",
+        "Compare saved classification models, review tuned settings, and keep the bonus MLP artifacts visible without forcing oversized plots.",
+        "Assignment Workflow",
+    )
     render_essay_card(
         "Data preparation and evaluation design",
         "The workflow builds X and y from the event-level dataset, orders inspections chronologically, keeps a held-out test set, and applies preprocessing inside each saved pipeline. "
@@ -5212,6 +5400,10 @@ def build_model_performance_tab(root: Path) -> None:
     for col in ["Accuracy", "Precision", "Recall", "F1", "ROC_AUC"]:
         show_df[col] = show_df[col].round(4)
 
+    render_subsection_label(
+        "Comparison summary",
+        "The table and F1 view stay near the top so the reader can see the leaderboard before opening model-specific detail panels.",
+    )
     st.markdown("**Model comparison summary table**")
     st.dataframe(show_df, use_container_width=True, hide_index=True)
     st.markdown("**Key metric comparison (F1)**")
@@ -5230,6 +5422,10 @@ def build_model_performance_tab(root: Path) -> None:
         "Accuracy alone is misleading in this dataset. The comparison should be read through F1, recall, and ROC-AUC because missing a future high-risk case is more costly than labeling too many rows as safe."
     )
 
+    render_subsection_label(
+        "Best hyperparameters",
+        "The saved manifest keeps the tuning output explicit so the workflow can be audited model by model.",
+    )
     st.markdown("**Best hyperparameters by model**")
     params_df = pd.DataFrame(
         [
@@ -5244,6 +5440,10 @@ def build_model_performance_tab(root: Path) -> None:
     )
     st.dataframe(params_df, use_container_width=True, hide_index=True)
 
+    render_subsection_label(
+        "ROC curves",
+        "These overview plots stay in a two-column grid to avoid one long image wall.",
+    )
     st.markdown("**ROC curves for all classification models**")
     roc_cols = st.columns(2)
     roc_idx = 0
@@ -5266,13 +5466,16 @@ def build_model_performance_tab(root: Path) -> None:
             m5.metric("ROC_AUC", f"{float(metrics.get('ROC_AUC', 0.0)):.4f}")
             st.json(model_info.get("best_params", {}), expanded=False)
 
+            media_col_left, media_col_right = st.columns(2, gap="large")
             roc_path = clean_text(model_info.get("roc_plot_path", ""))
             if roc_path and Path(roc_path).exists():
-                st.image(roc_path, caption=f"ROC curve — {model_name}", width=880)
+                with media_col_left:
+                    st.image(roc_path, caption=f"ROC curve — {model_name}", use_container_width=True)
 
             tree_plot_path = clean_text(extra.get("tree_plot_path", ""))
             if tree_plot_path and Path(tree_plot_path).exists():
-                st.image(tree_plot_path, caption="Best tuned decision tree", width=880)
+                with media_col_right:
+                    st.image(tree_plot_path, caption="Best tuned decision tree", use_container_width=True)
 
             feature_csv = clean_text(extra.get("feature_importance_csv", "")) or clean_text(
                 extra.get("coefficients_csv", "")
@@ -5286,7 +5489,7 @@ def build_model_performance_tab(root: Path) -> None:
 
             history_plot = clean_text(extra.get("history_plot_path", ""))
             if history_plot and Path(history_plot).exists():
-                st.image(history_plot, caption="MLP training history", width=880)
+                st.image(history_plot, caption="MLP training history", use_container_width=True)
 
             tuning_csv = clean_text(extra.get("tuning_results_csv", ""))
             tuning_plot = clean_text(extra.get("tuning_plot_path", ""))
@@ -5295,7 +5498,7 @@ def build_model_performance_tab(root: Path) -> None:
                 st.markdown("**Bonus — MLP hyperparameter tuning results**")
                 st.dataframe(tuning_df, use_container_width=True, hide_index=True)
             if tuning_plot and Path(tuning_plot).exists():
-                st.image(tuning_plot, caption="MLP tuning top configurations", width=880)
+                st.image(tuning_plot, caption="MLP tuning top configurations", use_container_width=True)
 
     render_essay_card(
         "Model trade-offs",
@@ -5309,6 +5512,11 @@ def build_explainability_prediction_tab(
     summary_df: pd.DataFrame,
     root: Path,
 ) -> None:
+    render_section_header(
+        "Explainability & Interactive Prediction",
+        "Use one saved model for live probability scoring and a tree-based SHAP path for consistent global and local explanations.",
+        "Assignment Workflow",
+    )
     manifest_bundle = load_predict_manifest(str(root))
     if not manifest_bundle.get("available", False):
         st.warning(manifest_bundle.get("message", "Predict manifest not available."))
@@ -5343,32 +5551,43 @@ def build_explainability_prediction_tab(
         "This keeps the prediction interaction flexible while using a tree-based model for local additive explanation and the required waterfall decomposition.",
     )
 
+    render_subsection_label(
+        "Global SHAP views",
+        "The global views are paired side by side so the reader can compare directional spread and overall importance without oversized plots.",
+    )
     shap_summary_path = clean_text(shap_meta.get("summary_plot_path", ""))
     shap_bar_path = clean_text(shap_meta.get("bar_plot_path", ""))
+    shap_left, shap_right = st.columns(2, gap="large")
     if shap_summary_path and Path(shap_summary_path).exists():
-        st.image(shap_summary_path, caption=f"SHAP summary plot — {shap_model_name}", width=880)
-        st.caption(
-            "The beeswarm plot shows both importance and direction: points to the right push the prediction toward the positive class, while points to the left pull it down. "
-            "Features near the top influence the model most often and most strongly across the sample."
-        )
-        render_takeaway_box(
-            "Global SHAP confirms that the model is reacting to a compact set of operational signals rather than to arbitrary noise."
-        )
+        with shap_left:
+            st.image(shap_summary_path, caption=f"SHAP summary plot — {shap_model_name}", use_container_width=True)
+            st.caption(
+                "The beeswarm plot shows both importance and direction: points to the right push the prediction toward the positive class, while points to the left pull it down. "
+                "Features near the top influence the model most often and most strongly across the sample."
+            )
+            render_takeaway_box(
+                "Global SHAP confirms that the model is reacting to a compact set of operational signals rather than to arbitrary noise."
+            )
     if shap_bar_path and Path(shap_bar_path).exists():
-        st.image(shap_bar_path, caption=f"Mean absolute SHAP values — {shap_model_name}", width=880)
-        st.caption(
-            "The bar plot removes direction and ranks variables by average absolute impact. "
-            "It is useful for a manager because it summarizes where intervention effort is most likely to change model output."
-        )
-        render_takeaway_box(
-            "The highest-ranked features define the inspection profile an owner should review first when deciding where to intervene before the next county visit."
-        )
+        with shap_right:
+            st.image(shap_bar_path, caption=f"Mean absolute SHAP values — {shap_model_name}", use_container_width=True)
+            st.caption(
+                "The bar plot removes direction and ranks variables by average absolute impact. "
+                "It is useful for a manager because it summarizes where intervention effort is most likely to change model output."
+            )
+            render_takeaway_box(
+                "The highest-ranked features define the inspection profile an owner should review first when deciding where to intervene before the next county visit."
+            )
 
     shap_csv = clean_text(shap_meta.get("mean_abs_shap_csv", ""))
     if shap_csv and Path(shap_csv).exists():
         shap_df = load_csv_safe(shap_csv)
         st.dataframe(shap_df.head(15), use_container_width=True, hide_index=True)
 
+    render_subsection_label(
+        "Interactive what-if prediction",
+        "The workflow is intentionally linear: choose a model, load a restaurant template, edit controllable inputs, then request the local SHAP waterfall only when needed.",
+    )
     model_names = list(available_prediction_models.keys())
     default_predict_model = (
         manifest.get("best_model_name") if manifest.get("best_model_name") in model_names else model_names[0]
@@ -5540,7 +5759,8 @@ def render_main_navigation() -> str:
             f"<div class='nav-group-label {title_class}'>{escape(title)}</div>",
             unsafe_allow_html=True,
         )
-        button_cols = container.columns(len(items), gap="small")
+        button_weights = [max(1.0, min(1.45, len(nav_label) / 18.0)) for _, nav_label in items]
+        button_cols = container.columns(button_weights, gap="small")
         for col, (nav_key, nav_label) in zip(button_cols, items):
             button_type = "primary" if current_nav == nav_key else "secondary"
             if col.button(nav_label, key=f"main_nav_{nav_key}", use_container_width=True, type=button_type):
@@ -5574,9 +5794,10 @@ def main() -> None:
 
     st.session_state["locale"] = "en"
 
-    st.title("King County Restaurant Safety Dashboard")
-    st.caption(
-        "Public-facing hygiene transparency tools on the left, assignment-grade analytics workflow on the right."
+    render_section_header(
+        "King County Restaurant Safety Dashboard",
+        "Public-facing hygiene transparency tools on the left, assignment-grade analytics workflow on the right.",
+        "King County Open Data"
     )
 
     try:
