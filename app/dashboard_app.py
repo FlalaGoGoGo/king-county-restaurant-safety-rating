@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 import os
 import re
 import time
@@ -35,20 +36,8 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - fallback for non-ML env
     JOBLIB_AVAILABLE = False
 
-try:
-    import shap
-
-    SHAP_AVAILABLE = True
-except ModuleNotFoundError:  # pragma: no cover - fallback for non-ML env
-    SHAP_AVAILABLE = False
-
-try:
-    import torch
-    from torch import nn
-
-    TORCH_AVAILABLE = True
-except ModuleNotFoundError:  # pragma: no cover - fallback for non-ML env
-    TORCH_AVAILABLE = False
+SHAP_AVAILABLE = importlib.util.find_spec("shap") is not None
+TORCH_AVAILABLE = importlib.util.find_spec("torch") is not None
 
 try:
     from sklearn.compose import ColumnTransformer
@@ -993,6 +982,23 @@ def cache_resource(func):
     return st.cache_resource(show_spinner=False)(func)
 
 
+def import_shap_module() -> Any:
+    if not SHAP_AVAILABLE:
+        raise ModuleNotFoundError("shap is not installed.")
+    import shap
+
+    return shap
+
+
+def import_torch_modules() -> Tuple[Any, Any]:
+    if not TORCH_AVAILABLE:
+        raise ModuleNotFoundError("torch is not installed.")
+    import torch
+    from torch import nn
+
+    return torch, nn
+
+
 @cache_data
 def load_rating_poster_catalog(root_str: str) -> Dict[str, Dict[str, str]]:
     root = Path(root_str)
@@ -1668,10 +1674,31 @@ def append_effective_rating_columns(events_df: pd.DataFrame) -> pd.DataFrame:
     return pd.concat(groups, ignore_index=True)
 
 
+def resolve_prepared_app_data_paths(root: Path) -> Tuple[Path, Path, Path]:
+    prepared_dir = root / DEPLOY_BUNDLE_DIRNAME / "prepared"
+    return (
+        prepared_dir / "events_app.parquet",
+        prepared_dir / "violations_app.parquet",
+        prepared_dir / "summary_app.parquet",
+    )
+
+
 @cache_data
 def load_data(root_str: str) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, str]]:
     root = Path(root_str)
     payload = load_latest_run_payload(root)
+    prepared_events_path, prepared_violations_path, _ = resolve_prepared_app_data_paths(root)
+    if prepared_events_path.exists() and prepared_violations_path.exists():
+        events_df = pd.read_parquet(prepared_events_path)
+        violations_df = pd.read_parquet(prepared_violations_path)
+        if "inspection_date_dt" in events_df.columns:
+            events_df["inspection_date_dt"] = pd.to_datetime(events_df["inspection_date_dt"], errors="coerce")
+        if "inspection_date_dt" in violations_df.columns:
+            violations_df["inspection_date_dt"] = pd.to_datetime(
+                violations_df["inspection_date_dt"], errors="coerce"
+            )
+        return events_df, violations_df, payload
+
     silver_event_csv, dashboard_violation_csv = resolve_data_paths(root, payload)
 
     events_df = pd.read_csv(silver_event_csv, dtype=str).fillna("")
@@ -1762,6 +1789,14 @@ def load_data(root_str: str) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, str]
     )
 
     return events_df, violations_df, payload
+
+
+@cache_data
+def load_prepared_business_summary(root_str: str) -> pd.DataFrame:
+    _, _, prepared_summary_path = resolve_prepared_app_data_paths(Path(root_str))
+    if prepared_summary_path.exists():
+        return pd.read_parquet(prepared_summary_path)
+    return pd.DataFrame()
 
 
 def display_name_frame(df: pd.DataFrame) -> pd.Series:
@@ -2735,25 +2770,26 @@ def load_joblib_resource(path_str: str) -> Any:
     return joblib.load(resolved_path)
 
 
-if TORCH_AVAILABLE:
-
-    class MLPBinaryClassifier(nn.Module):
+def build_mlp_binary_classifier(nn_module: Any) -> Any:
+    class MLPBinaryClassifier(nn_module.Module):
         def __init__(self, input_dim: int, hidden_layers: Tuple[int, ...], dropout: float) -> None:
             super().__init__()
-            layers: List[nn.Module] = []
+            layers: List[Any] = []
             prev_dim = input_dim
             for h in hidden_layers:
-                layers.append(nn.Linear(prev_dim, int(h)))
-                layers.append(nn.ReLU())
+                layers.append(nn_module.Linear(prev_dim, int(h)))
+                layers.append(nn_module.ReLU())
                 if dropout > 0:
-                    layers.append(nn.Dropout(float(dropout)))
+                    layers.append(nn_module.Dropout(float(dropout)))
                 prev_dim = int(h)
-            layers.append(nn.Linear(prev_dim, 1))
-            layers.append(nn.Sigmoid())
-            self.net = nn.Sequential(*layers)
+            layers.append(nn_module.Linear(prev_dim, 1))
+            layers.append(nn_module.Sigmoid())
+            self.net = nn_module.Sequential(*layers)
 
-        def forward(self, x: torch.Tensor) -> torch.Tensor:
+        def forward(self, x: Any) -> Any:
             return self.net(x)
+
+    return MLPBinaryClassifier
 
 
 @cache_resource
@@ -2763,6 +2799,7 @@ def load_torch_mlp_bundle(model_path_str: str, preprocessor_path_str: str) -> Di
     if not JOBLIB_AVAILABLE:
         raise RuntimeError("joblib is required for MLP preprocessing.")
 
+    torch, nn = import_torch_modules()
     model_path = resolve_repo_path(app_root(), model_path_str)
     preprocessor_path = resolve_repo_path(app_root(), preprocessor_path_str)
 
@@ -2774,6 +2811,7 @@ def load_torch_mlp_bundle(model_path_str: str, preprocessor_path_str: str) -> Di
     hidden_layers = checkpoint.get("hidden_layers", [128, 128])
     hidden_layers = tuple(int(x) for x in hidden_layers)
     dropout = float(checkpoint.get("dropout", 0.0))
+    MLPBinaryClassifier = build_mlp_binary_classifier(nn)
     model = MLPBinaryClassifier(input_dim=input_dim, hidden_layers=hidden_layers, dropout=dropout)
     model.load_state_dict(checkpoint["state_dict"])
     model.eval()
@@ -2782,6 +2820,7 @@ def load_torch_mlp_bundle(model_path_str: str, preprocessor_path_str: str) -> Di
     return {
         "model": model,
         "preprocessor": preprocessor,
+        "torch": torch,
     }
 
 
@@ -2817,6 +2856,7 @@ def predict_probability_with_manifest_model(model_info: Dict[str, Any], features
         bundle = load_torch_mlp_bundle(model_path, pre_path)
         pre = bundle["preprocessor"]
         model = bundle["model"]
+        torch = bundle["torch"]
         arr = np.asarray(pre.transform(features), dtype=np.float32)
         tensor = torch.from_numpy(arr)
         with torch.no_grad():
@@ -2874,6 +2914,7 @@ def maybe_render_shap_waterfall(
     if not JOBLIB_AVAILABLE:
         st.info("joblib is required for SHAP runtime rendering.")
         return
+    shap = import_shap_module()
 
     models = manifest.get("models", {})
     model_info = models.get(selected_model_name) or models.get(
@@ -5173,6 +5214,19 @@ def build_explainability_prediction_tab(
         st.warning("No trained models found in manifest.")
         return
 
+    available_prediction_models = {
+        name: info
+        for name, info in models.items()
+        if clean_text(info.get("kind", "")) != "pytorch_mlp" or TORCH_AVAILABLE
+    }
+    if not available_prediction_models:
+        st.warning("No prediction models are available in the current deployment environment.")
+        return
+    if len(available_prediction_models) != len(models):
+        st.caption(
+            "MLP remains documented in Model Performance, but live MLP inference is disabled in the lightweight cloud deployment to keep startup stable."
+        )
+
     shap_meta = manifest.get("shap", {})
     shap_model_name = clean_text(shap_meta.get("best_tree_model_name", "")) or clean_text(
         manifest.get("best_tree_model_name", "")
@@ -5209,7 +5263,7 @@ def build_explainability_prediction_tab(
         shap_df = load_csv_safe(shap_csv)
         st.dataframe(shap_df.head(15), use_container_width=True, hide_index=True)
 
-    model_names = list(models.keys())
+    model_names = list(available_prediction_models.keys())
     default_predict_model = (
         manifest.get("best_model_name") if manifest.get("best_model_name") in model_names else model_names[0]
     )
@@ -5319,7 +5373,7 @@ def build_explainability_prediction_tab(
     }
     predict_df = pd.DataFrame([predict_row])[MODEL_ALL_FEATURES]
 
-    model_info = models[selected_predict_model]
+    model_info = available_prediction_models[selected_predict_model]
     try:
         risk_prob = predict_probability_with_manifest_model(model_info, predict_df)
         risk_band = probability_to_band(risk_prob)
@@ -5338,14 +5392,21 @@ def build_explainability_prediction_tab(
     )
 
     st.markdown("**Custom-input SHAP waterfall**")
-    try:
-        maybe_render_shap_waterfall(manifest, shap_model_name or selected_predict_model, predict_df)
+    if st.button("Generate local SHAP waterfall", key="predict_generate_waterfall", type="secondary"):
+        st.session_state["predict_waterfall_enabled"] = True
+    if st.session_state.get("predict_waterfall_enabled", False):
+        try:
+            maybe_render_shap_waterfall(manifest, shap_model_name or selected_predict_model, predict_df)
+            st.caption(
+                "Positive SHAP contributions move the predicted probability upward, while negative contributions pull it downward. "
+                "For a restaurant owner, this makes the prediction operational because it translates a model score into the specific conditions that most need attention."
+            )
+        except Exception as exc:
+            st.warning(f"Unable to render SHAP waterfall: {exc}")
+    else:
         st.caption(
-            "Positive SHAP contributions move the predicted probability upward, while negative contributions pull it downward. "
-            "For a restaurant owner, this makes the prediction operational because it translates a model score into the specific conditions that most need attention."
+            "The waterfall explanation is generated on demand. This keeps the cloud app responsive while preserving the required local explanation workflow."
         )
-    except Exception as exc:
-        st.warning(f"Unable to render SHAP waterfall: {exc}")
 
 
 def main() -> None:
@@ -5371,7 +5432,9 @@ def main() -> None:
         st.error(f"Failed to load data: {exc}")
         st.stop()
 
-    summary_df = build_business_summary(events_df)
+    summary_df = load_prepared_business_summary(str(root))
+    if summary_df.empty:
+        summary_df = build_business_summary(events_df)
     if summary_df.empty:
         st.warning("No restaurant data available.")
         st.stop()
