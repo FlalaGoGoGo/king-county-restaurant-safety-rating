@@ -1,0 +1,26 @@
+feature,importance
+cat__inspection_result_Satisfactory,0.19783044
+num__grade_num,0.1497761
+cat__inspection_type_Return Inspection,0.061638497
+cat__city_canonical_BELLEVUE,0.036157224
+cat__city_canonical_FEDERAL WAY,0.031176802
+num__violation_count_total,0.028964467
+cat__city_canonical_TUKWILA,0.02736799
+cat__inspection_type_Routine Inspection/Field Review,0.02721553
+cat__city_canonical_REDMOND,0.02249515
+num__inspection_score,0.021408375
+cat__city_canonical_KENT,0.020838188
+num__red_points_total,0.020762635
+cat__city_canonical_BURIEN,0.019256452
+cat__city_canonical_NORTH BEND,0.018877583
+cat__city_canonical_MAPLE VALLEY,0.018847706
+cat__city_canonical_KIRKLAND,0.018416137
+cat__city_canonical_KENMORE,0.017401371
+cat__city_canonical_RENTON,0.017205993
+num__blue_points_total,0.01626353
+num__is_high_risk,0.015822629
+cat__city_canonical_SNOQUALMIE,0.015151932
+cat__city_canonical_ENUMCLAW,0.014783375
+cat__city_canonical_SHORELINE,0.014685303
+cat__city_canonical_LAKE FOREST PARK,0.0143923145
+cat__city_canonical_AUBURN,0.014345569

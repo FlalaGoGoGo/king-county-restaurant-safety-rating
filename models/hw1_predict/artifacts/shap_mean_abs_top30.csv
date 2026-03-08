@@ -1,0 +1,31 @@
+feature,mean_abs_shap
+num__grade_num,0.14533429601079345
+cat__inspection_result_Satisfactory,0.06874206280956552
+num__inspection_score,0.037314240100715365
+cat__inspection_type_Return Inspection,0.015309989417184333
+cat__city_canonical_BELLEVUE,0.013925507257412567
+cat__city_canonical_SEATTLE,0.013707205423511141
+cat__inspection_type_Consultation/Education - Field,0.013008871198798568
+num__violation_count_total,0.009597128441727906
+num__blue_points_total,0.007000688391323186
+cat__inspection_result_Complete,0.006213122898702599
+num__is_high_risk,0.003941406572504892
+cat__city_canonical_RENTON,0.0037088823908271364
+cat__city_canonical_KENT,0.0035598322371229664
+num__red_points_total,0.0022555407435131667
+cat__city_canonical_FEDERAL WAY,0.00220155392080164
+cat__city_canonical_AUBURN,0.001982676045473862
+cat__city_canonical_BURIEN,0.0018432180349442437
+cat__city_canonical_SHORELINE,0.0010934365502899568
+cat__inspection_result_Unsatisfactory,0.0005662511260510931
+cat__city_canonical_SNOQUALMIE,0.0
+cat__city_canonical_PACIFIC,0.0
+cat__city_canonical_LYNNWOOD,0.0
+cat__city_canonical_MAPLE VALLEY,0.0
+cat__city_canonical_MEDINA,0.0
+cat__city_canonical_MERCER ISLAND,0.0
+cat__city_canonical_NEWCASTLE,0.0
+cat__city_canonical_NORMANDY PARK,0.0
+cat__city_canonical_NORTH BEND,0.0
+cat__city_canonical_PUYALLUP,0.0
+cat__city_canonical_PRESTON,0.0

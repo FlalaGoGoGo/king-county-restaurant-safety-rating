@@ -1,0 +1,441 @@
+{
+  "outside_tacoma": [
+    {
+      "name": "DIPPIN DOTS ICE CREAM TRAILER",
+      "address": "9007 S 19TH ST",
+      "city": "TACOMA",
+      "zip_code": "98466",
+      "inspection_date": "2024-07-18T00:00:00.000",
+      "latitude": "47.2437369000",
+      "longitude": "-122.5585119000"
+    },
+    {
+      "name": "DIPPIN DOTS ICE CREAM TRAILER",
+      "address": "9007 S 19TH ST",
+      "city": "TACOMA",
+      "zip_code": "98466",
+      "inspection_date": "2023-06-10T00:00:00.000",
+      "latitude": "47.2437369000",
+      "longitude": "-122.5585119000"
+    },
+    {
+      "name": "DIPPIN DOTS ICE CREAM TRUCK",
+      "address": "9007 S 19TH ST",
+      "city": "TACOMA",
+      "zip_code": "98466",
+      "inspection_date": NaN,
+      "latitude": "47.2437369000",
+      "longitude": "-122.5585119000"
+    }
+  ],
+  "outside_everett": [
+    {
+      "name": "EXPRESS MEXICAN GRILL",
+      "address": "1100 BROADWAY S",
+      "city": "EVERETT",
+      "zip_code": "98201",
+      "inspection_date": "2024-06-07T00:00:00.000",
+      "latitude": "47.5315465500",
+      "longitude": "-122.3252471700"
+    },
+    {
+      "name": "EXPRESS MEXICAN GRILL",
+      "address": "1100 BROADWAY S",
+      "city": "EVERETT",
+      "zip_code": "98201",
+      "inspection_date": "2024-06-07T00:00:00.000",
+      "latitude": "47.5315465500",
+      "longitude": "-122.3252471700"
+    },
+    {
+      "name": "EXPRESS MEXICAN GRILL",
+      "address": "1100 BROADWAY S",
+      "city": "EVERETT",
+      "zip_code": "98201",
+      "inspection_date": "2024-05-08T00:00:00.000",
+      "latitude": "47.5315465500",
+      "longitude": "-122.3252471700"
+    }
+  ],
+  "outside_lynnwood": [
+    {
+      "name": "DREAMY DRINKS (KC678)",
+      "address": "19515 44th AVE W A",
+      "city": "LYNNWOOD",
+      "zip_code": "98036",
+      "inspection_date": "2025-03-22T00:00:00.000",
+      "latitude": "47.7542156100",
+      "longitude": "-122.2800666200"
+    },
+    {
+      "name": "DREAMY DRINKS (KC678)",
+      "address": "19515 44th AVE W A",
+      "city": "LYNNWOOD",
+      "zip_code": "98036",
+      "inspection_date": "2024-10-27T00:00:00.000",
+      "latitude": "47.7542156100",
+      "longitude": "-122.2800666200"
+    },
+    {
+      "name": "DREAMY DRINKS (KC678)",
+      "address": "19515 44th AVE W A",
+      "city": "LYNNWOOD",
+      "zip_code": "98036",
+      "inspection_date": "2024-05-25T00:00:00.000",
+      "latitude": "47.7542156100",
+      "longitude": "-122.2800666200"
+    }
+  ],
+  "outside_puyallup": [
+    {
+      "name": "FISHER SCONE TRUCK",
+      "address": "110 9TH AVE SW",
+      "city": "PUYALLUP",
+      "zip_code": "98371",
+      "inspection_date": "2025-07-11T00:00:00.000",
+      "latitude": "47.1842407000",
+      "longitude": "-122.2973875000"
+    },
+    {
+      "name": "FISHER SCONE TRUCK",
+      "address": "110 9TH AVE SW",
+      "city": "PUYALLUP",
+      "zip_code": "98371",
+      "inspection_date": "2023-06-23T00:00:00.000",
+      "latitude": "47.1842407000",
+      "longitude": "-122.2973875000"
+    },
+    {
+      "name": "FISHER SCONE WAGON #2",
+      "address": "110 9TH AVE SW",
+      "city": "PUYALLUP",
+      "zip_code": "98371",
+      "inspection_date": "2025-05-17T00:00:00.000",
+      "latitude": "47.1846152000",
+      "longitude": "-122.2973330000"
+    }
+  ],
+  "outside_snohomish": [
+    {
+      "name": "BEST OF BOTH WORLDS (KC671)",
+      "address": "8218 156TH ST SE",
+      "city": "SNOHOMISH",
+      "zip_code": "98296",
+      "inspection_date": "2019-08-28T00:00:00.000",
+      "latitude": "47.8543310000",
+      "longitude": "-122.1213600000"
+    },
+    {
+      "name": "BIG DOG'S 2",
+      "address": "723 AVENUE D",
+      "city": "SNOHOMISH",
+      "zip_code": "98272",
+      "inspection_date": NaN,
+      "latitude": "47.9216920000",
+      "longitude": "-122.0974450000"
+    },
+    {
+      "name": "BIG DOGS",
+      "address": "723 D STE E",
+      "city": "SNOHOMISH",
+      "zip_code": "98290",
+      "inspection_date": "2024-07-06T00:00:00.000",
+      "latitude": "47.7583111800",
+      "longitude": "-122.1596395200"
+    }
+  ],
+  "outside_aberdeen": [
+    {
+      "name": "ARTFUL BITES DESIGN LLC",
+      "address": "14959 NE 95TH ST",
+      "city": "ABERDEEN",
+      "zip_code": "98052",
+      "inspection_date": "2025-04-30T00:00:00.000",
+      "latitude": "47.6854545800",
+      "longitude": "-122.1407367800"
+    },
+    {
+      "name": "ARTFUL BITES DESIGN LLC",
+      "address": "14959 NE 95TH ST",
+      "city": "ABERDEEN",
+      "zip_code": "98052",
+      "inspection_date": "2024-10-10T00:00:00.000",
+      "latitude": "47.6854545800",
+      "longitude": "-122.1407367800"
+    },
+    {
+      "name": "RUBINSTEIN BAGELS",
+      "address": "16050 CLEVELAND ST Ste 102",
+      "city": "ABERDEEN",
+      "zip_code": "98052",
+      "inspection_date": "2025-04-16T00:00:00.000",
+      "latitude": "47.6746000000",
+      "longitude": "-122.1260000000"
+    }
+  ],
+  "variant_sea_tac": [
+    {
+      "name": "AIRPORT SHELL",
+      "address": "17010 INTERNATIONAL BL",
+      "city": "SEA TAC",
+      "zip_code": "98188",
+      "inspection_date": "2025-11-04T00:00:00.000"
+    },
+    {
+      "name": "AIRPORT SHELL",
+      "address": "17010 INTERNATIONAL BL",
+      "city": "SEA TAC",
+      "zip_code": "98188",
+      "inspection_date": "2025-07-29T00:00:00.000"
+    },
+    {
+      "name": "AIRPORT SHELL",
+      "address": "17010 INTERNATIONAL BL",
+      "city": "SEA TAC",
+      "zip_code": "98188",
+      "inspection_date": "2024-03-01T00:00:00.000"
+    }
+  ],
+  "variant_belleue": [
+    {
+      "name": "ITADAKI BBQ",
+      "address": "550 106th AVE NE",
+      "city": "BELLEUE",
+      "zip_code": "98004",
+      "inspection_date": "2025-11-18T00:00:00.000"
+    },
+    {
+      "name": "ITADAKI BBQ",
+      "address": "550 106th AVE NE",
+      "city": "BELLEUE",
+      "zip_code": "98004",
+      "inspection_date": "2025-11-18T00:00:00.000"
+    },
+    {
+      "name": "ITADAKI BBQ",
+      "address": "550 106th AVE NE",
+      "city": "BELLEUE",
+      "zip_code": "98004",
+      "inspection_date": "2025-11-18T00:00:00.000"
+    }
+  ],
+  "variant_seatlle": [
+    {
+      "name": "INSOMNIA COOKIES #367",
+      "address": "1513 BROADWAY Ste C",
+      "city": "SEATLLE",
+      "zip_code": "98122",
+      "inspection_date": "2025-05-13T00:00:00.000"
+    }
+  ],
+  "variant_west_seattle": [
+    {
+      "name": "MICHELLE'S BUBBLE TEA, INC.",
+      "address": "4740 42nd AVE SW STE 27",
+      "city": "WEST SEATTLE",
+      "zip_code": "98116",
+      "inspection_date": "2025-10-27T00:00:00.000"
+    },
+    {
+      "name": "MICHELLE'S BUBBLE TEA, INC.",
+      "address": "4740 42nd AVE SW STE 27",
+      "city": "WEST SEATTLE",
+      "zip_code": "98116",
+      "inspection_date": "2025-07-14T00:00:00.000"
+    },
+    {
+      "name": "MICHELLE'S BUBBLE TEA, INC.",
+      "address": "4740 42nd AVE SW STE 27",
+      "city": "WEST SEATTLE",
+      "zip_code": "98116",
+      "inspection_date": "2025-01-24T00:00:00.000"
+    }
+  ],
+  "variant_vashon_island": [
+    {
+      "name": "AJ'S ESPRESSO",
+      "address": "17311 VASHON HWY SW ",
+      "city": "VASHON ISLAND",
+      "zip_code": "98070",
+      "inspection_date": "2025-09-23T00:00:00.000"
+    },
+    {
+      "name": "AJ'S ESPRESSO",
+      "address": "17311 VASHON HWY SW ",
+      "city": "VASHON ISLAND",
+      "zip_code": "98070",
+      "inspection_date": "2025-09-23T00:00:00.000"
+    },
+    {
+      "name": "AJ'S ESPRESSO",
+      "address": "17311 VASHON HWY SW ",
+      "city": "VASHON ISLAND",
+      "zip_code": "98070",
+      "inspection_date": "2024-10-28T00:00:00.000"
+    }
+  ],
+  "date_parse_fail": [
+    {
+      "name": "2ND AND SENECA CAFE",
+      "city": "Seattle",
+      "inspection_date": NaN,
+      "inspection_serial_num": NaN,
+      "violation_record_id": NaN
+    },
+    {
+      "name": "7-ELEVEN STORE #14418B",
+      "city": "Bellevue",
+      "inspection_date": NaN,
+      "inspection_serial_num": NaN,
+      "violation_record_id": NaN
+    },
+    {
+      "name": "Afran Market",
+      "city": "KENT",
+      "inspection_date": NaN,
+      "inspection_serial_num": NaN,
+      "violation_record_id": NaN
+    },
+    {
+      "name": "AFRICANITA LLC",
+      "city": "SEATTLE",
+      "inspection_date": NaN,
+      "inspection_serial_num": NaN,
+      "violation_record_id": NaN
+    },
+    {
+      "name": "AFU Foods LLC",
+      "city": "SEATTLE",
+      "inspection_date": NaN,
+      "inspection_serial_num": NaN,
+      "violation_record_id": NaN
+    }
+  ],
+  "negative_score": [
+    {
+      "name": "ASIA BBQ & FAST FOOD",
+      "city": "SEATTLE",
+      "inspection_date": "2025-02-05T00:00:00.000",
+      "inspection_score": "-2",
+      "inspection_result": "Complete",
+      "inspection_type": "Consultation/Education - Field"
+    },
+    {
+      "name": "INDIAN SPICE BISTRO",
+      "city": "SHORELINE",
+      "inspection_date": "2023-12-20T00:00:00.000",
+      "inspection_score": "-10",
+      "inspection_result": "Complete",
+      "inspection_type": "Consultation/Education - Field"
+    },
+    {
+      "name": "MENUDERIA MARIA",
+      "city": "DES MOINES",
+      "inspection_date": "2024-12-09T00:00:00.000",
+      "inspection_score": "-1",
+      "inspection_result": "Unsatisfactory",
+      "inspection_type": "Return Inspection"
+    },
+    {
+      "name": "MENUDERIA MARIA",
+      "city": "DES MOINES",
+      "inspection_date": "2022-09-23T00:00:00.000",
+      "inspection_score": "-2",
+      "inspection_result": "Complete",
+      "inspection_type": "Consultation/Education - Field"
+    },
+    {
+      "name": "MINT, THE",
+      "city": "ENUMCLAW",
+      "inspection_date": "2015-03-18T00:00:00.000",
+      "inspection_score": "-2",
+      "inspection_result": "Satisfactory",
+      "inspection_type": "Return Inspection"
+    },
+    {
+      "name": "PURPLE CAFE & WINE BAR",
+      "city": "SEATTLE",
+      "inspection_date": "2020-05-06T00:00:00.000",
+      "inspection_score": "-1",
+      "inspection_result": "Complete",
+      "inspection_type": "Consultation/Education - Field"
+    },
+    {
+      "name": "TACO DEL MAR",
+      "city": "SEATTLE",
+      "inspection_date": "2020-05-22T00:00:00.000",
+      "inspection_score": "-1",
+      "inspection_result": "Complete",
+      "inspection_type": "Consultation/Education - Field"
+    }
+  ],
+  "truncated_violation": [
+    {
+      "name": "+MAS CAFE",
+      "inspection_date": "2023-03-01T00:00:00.000",
+      "violation_description": "4400 - Plumbing properly sized, installed,...",
+      "violation_type": "BLUE"
+    },
+    {
+      "name": "+MAS CAFE",
+      "inspection_date": "2022-06-29T00:00:00.000",
+      "violation_description": "4800 - Physical facilities properly installed,...",
+      "violation_type": "BLUE"
+    },
+    {
+      "name": "1 HOTEL SEATTLE",
+      "inspection_date": "2018-12-10T00:00:00.000",
+      "violation_description": "4100 - Warewashing facilities properly installed,...",
+      "violation_type": "BLUE"
+    },
+    {
+      "name": "1 HOTEL SEATTLE",
+      "inspection_date": "2015-12-29T00:00:00.000",
+      "violation_description": "2200 - Accurate thermometer provided and used ...",
+      "violation_type": "RED"
+    },
+    {
+      "name": "1 HOTEL SEATTLE",
+      "inspection_date": "2012-03-26T00:00:00.000",
+      "violation_description": "0500 - Proper methods used to prevent bare hand...",
+      "violation_type": "RED"
+    }
+  ],
+  "grade_missing_with_risk_text": [
+    {
+      "name": "1ST UNION STORE",
+      "city": "SEATTLE",
+      "inspection_date": "2024-05-08T00:00:00.000",
+      "grade": NaN,
+      "description": "Grocery Store-no seating - Risk Category I"
+    },
+    {
+      "name": "1ST UNION STORE",
+      "city": "SEATTLE",
+      "inspection_date": "2023-03-02T00:00:00.000",
+      "grade": NaN,
+      "description": "Grocery Store-no seating - Risk Category I"
+    },
+    {
+      "name": "1ST UNION STORE",
+      "city": "SEATTLE",
+      "inspection_date": "2022-09-08T00:00:00.000",
+      "grade": NaN,
+      "description": "Grocery Store-no seating - Risk Category I"
+    },
+    {
+      "name": "1ST UNION STORE",
+      "city": "SEATTLE",
+      "inspection_date": "2021-11-04T00:00:00.000",
+      "grade": NaN,
+      "description": "Grocery Store-no seating - Risk Category I"
+    },
+    {
+      "name": "2 STATES KITCHEN LLC",
+      "city": "WOODINVILLE",
+      "inspection_date": "2025-11-14T00:00:00.000",
+      "grade": NaN,
+      "description": "Caterer - Risk Category III"
+    }
+  ]
+}

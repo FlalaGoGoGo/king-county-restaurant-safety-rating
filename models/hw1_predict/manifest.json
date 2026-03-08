@@ -1,0 +1,335 @@
+{
+  "generated_at_utc": "2026-02-26T04:30:38+00:00",
+  "dataset_id": "f29f-zza5",
+  "run_id": "20260225T234039Z",
+  "random_state": 42,
+  "target_column": "target_next_high_risk",
+  "feature_columns": [
+    "inspection_score",
+    "red_points_total",
+    "blue_points_total",
+    "violation_count_total",
+    "grade_num",
+    "is_high_risk",
+    "inspection_type",
+    "inspection_result",
+    "city_canonical"
+  ],
+  "numeric_features": [
+    "inspection_score",
+    "red_points_total",
+    "blue_points_total",
+    "violation_count_total",
+    "grade_num",
+    "is_high_risk"
+  ],
+  "categorical_features": [
+    "inspection_type",
+    "inspection_result",
+    "city_canonical"
+  ],
+  "source_rows": 184438,
+  "model_rows": 12000,
+  "test_size": 0.3,
+  "cv_folds": 5,
+  "train_rows": 8400,
+  "test_rows": 3600,
+  "positive_rate_train": 0.07595238095238095,
+  "positive_rate_test": 0.07611111111111112,
+  "elapsed_seconds": 28.82,
+  "best_model_name": "Logistic Regression",
+  "best_tree_model_name": "Decision Tree",
+  "models": {
+    "Logistic Regression": {
+      "kind": "sklearn_pipeline",
+      "model_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/models/logistic_regression.joblib",
+      "best_params": {},
+      "metrics": {
+        "Accuracy": 0.7077777777777777,
+        "Precision": 0.15452930728241562,
+        "Recall": 0.635036496350365,
+        "F1": 0.24857142857142858,
+        "ROC_AUC": 0.7270120176797714
+      },
+      "roc_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/roc_logistic_regression.png",
+      "extra": {
+        "coefficients_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/logistic_coefficients_top25.csv"
+      }
+    },
+    "Decision Tree": {
+      "kind": "sklearn_pipeline",
+      "model_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/models/decision_tree.joblib",
+      "best_params": {
+        "max_depth": 10,
+        "min_samples_leaf": 50
+      },
+      "metrics": {
+        "Accuracy": 0.63,
+        "Precision": 0.13667582417582416,
+        "Recall": 0.7262773722627737,
+        "F1": 0.2300578034682081,
+        "ROC_AUC": 0.7262817614810979
+      },
+      "roc_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/roc_decision_tree.png",
+      "extra": {
+        "tree_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/decision_tree_visualization.png"
+      }
+    },
+    "Random Forest": {
+      "kind": "sklearn_pipeline",
+      "model_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/models/random_forest.joblib",
+      "best_params": {
+        "max_depth": 8,
+        "n_estimators": 100
+      },
+      "metrics": {
+        "Accuracy": 0.6716666666666666,
+        "Precision": 0.1332794830371567,
+        "Recall": 0.6021897810218978,
+        "F1": 0.21825396825396826,
+        "ROC_AUC": 0.7105968897998953
+      },
+      "roc_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/roc_random_forest.png",
+      "extra": {
+        "feature_importance_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/random_forest_feature_importance_top25.csv"
+      }
+    },
+    "MLP": {
+      "kind": "pytorch_mlp",
+      "model_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/models/mlp_torch.pth",
+      "best_params": {
+        "hidden_layers": [
+          128,
+          128
+        ],
+        "activation": "relu",
+        "optimizer": "adam",
+        "epochs_trained": 24,
+        "batch_size": 256,
+        "framework": "pytorch",
+        "learning_rate": 0.0005,
+        "dropout": 0.2,
+        "tuning_grid": {
+          "hidden_layers": [
+            [
+              64,
+              64
+            ],
+            [
+              128,
+              128
+            ],
+            [
+              256,
+              128
+            ]
+          ],
+          "learning_rate": [
+            0.001,
+            0.0005
+          ],
+          "dropout": [
+            0.0,
+            0.2
+          ]
+        },
+        "selection_metric": "validation_f1"
+      },
+      "metrics": {
+        "Accuracy": 0.9238888888888889,
+        "Precision": 0.0,
+        "Recall": 0.0,
+        "F1": 0.0,
+        "ROC_AUC": 0.7294688826366912
+      },
+      "roc_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/roc_mlp.png",
+      "extra": {
+        "history_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/mlp_history.csv",
+        "history_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/mlp_training_history.png",
+        "tuning_results_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/mlp_tuning_results.csv",
+        "tuning_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/mlp_tuning_top_configs.png"
+      },
+      "preprocessor_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/models/mlp_preprocessor.joblib"
+    },
+    "XGBoost": {
+      "kind": "sklearn_pipeline",
+      "model_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/models/xgboost.joblib",
+      "best_params": {
+        "learning_rate": 0.1,
+        "max_depth": 3,
+        "n_estimators": 200
+      },
+      "metrics": {
+        "Accuracy": 0.6761111111111111,
+        "Precision": 0.13974151857835218,
+        "Recall": 0.6313868613138686,
+        "F1": 0.22883597883597884,
+        "ROC_AUC": 0.7173749401969004
+      },
+      "roc_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/roc_xgboost.png",
+      "extra": {
+        "feature_importance_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/xgboost_feature_importance_top25.csv"
+      }
+    }
+  },
+  "comparison_csv_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/model_comparison.csv",
+  "roc_json_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/roc_curves.json",
+  "shap": {
+    "best_tree_model_name": "Decision Tree",
+    "summary_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/shap_summary.png",
+    "bar_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/shap_bar.png",
+    "mean_abs_shap_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/shap_mean_abs_top30.csv",
+    "expected_value": 0.5000000000000017,
+    "feature_names": [
+      "num__inspection_score",
+      "num__red_points_total",
+      "num__blue_points_total",
+      "num__violation_count_total",
+      "num__grade_num",
+      "num__is_high_risk",
+      "cat__inspection_type_Consultation/Education - Field",
+      "cat__inspection_type_Return Inspection",
+      "cat__inspection_type_Routine Inspection/Field Review",
+      "cat__inspection_result_Baseline Data",
+      "cat__inspection_result_Complete",
+      "cat__inspection_result_Confirmed",
+      "cat__inspection_result_Incomplete",
+      "cat__inspection_result_Not Accessible",
+      "cat__inspection_result_Not Applicable",
+      "cat__inspection_result_Not Confirmed",
+      "cat__inspection_result_Not Ready For Inspection",
+      "cat__inspection_result_Satisfactory",
+      "cat__inspection_result_Unsatisfactory",
+      "cat__city_canonical_ALGONA",
+      "cat__city_canonical_AUBURN",
+      "cat__city_canonical_BELLEVUE",
+      "cat__city_canonical_BLACK DIAMOND",
+      "cat__city_canonical_BONNEY LAKE",
+      "cat__city_canonical_BOTHELL",
+      "cat__city_canonical_BURIEN",
+      "cat__city_canonical_CARNATION",
+      "cat__city_canonical_CLYDE HILL",
+      "cat__city_canonical_COVINGTON",
+      "cat__city_canonical_DES MOINES",
+      "cat__city_canonical_DUVALL",
+      "cat__city_canonical_ENUMCLAW",
+      "cat__city_canonical_EVERETT",
+      "cat__city_canonical_FALL CITY",
+      "cat__city_canonical_FEDERAL WAY",
+      "cat__city_canonical_HOBART",
+      "cat__city_canonical_ISSAQUAH",
+      "cat__city_canonical_KENMORE",
+      "cat__city_canonical_KENT",
+      "cat__city_canonical_KIRKLAND",
+      "cat__city_canonical_LAKE FOREST PARK",
+      "cat__city_canonical_LYNNWOOD",
+      "cat__city_canonical_MAPLE VALLEY",
+      "cat__city_canonical_MEDINA",
+      "cat__city_canonical_MERCER ISLAND",
+      "cat__city_canonical_NEWCASTLE",
+      "cat__city_canonical_NORMANDY PARK",
+      "cat__city_canonical_NORTH BEND",
+      "cat__city_canonical_PACIFIC",
+      "cat__city_canonical_PRESTON",
+      "cat__city_canonical_PUYALLUP",
+      "cat__city_canonical_REDMOND",
+      "cat__city_canonical_RENTON",
+      "cat__city_canonical_SAMMAMISH",
+      "cat__city_canonical_SEATAC",
+      "cat__city_canonical_SEATTLE",
+      "cat__city_canonical_SHORELINE",
+      "cat__city_canonical_SKYKOMISH",
+      "cat__city_canonical_SNOQUALMIE",
+      "cat__city_canonical_SNOQUALMIE PASS",
+      "cat__city_canonical_TUKWILA",
+      "cat__city_canonical_VASHON ISLAND",
+      "cat__city_canonical_WEST SEATTLE",
+      "cat__city_canonical_WOODINVILLE"
+    ]
+  },
+  "interactive_defaults": {
+    "numeric_defaults": {
+      "inspection_score": 0.0,
+      "red_points_total": 0.0,
+      "blue_points_total": 0.0,
+      "violation_count_total": 0.0,
+      "grade_num": 1.0,
+      "is_high_risk": 0.0
+    },
+    "categorical_defaults": {
+      "inspection_type": "Routine Inspection/Field Review",
+      "inspection_result": "Satisfactory",
+      "city_canonical": "SEATTLE"
+    },
+    "categorical_options": {
+      "inspection_type": [
+        "Consultation/Education - Field",
+        "Return Inspection",
+        "Routine Inspection/Field Review"
+      ],
+      "inspection_result": [
+        "Baseline Data",
+        "Complete",
+        "Confirmed",
+        "Incomplete",
+        "Not Accessible",
+        "Not Applicable",
+        "Not Confirmed",
+        "Not Ready For Inspection",
+        "Satisfactory",
+        "Unsatisfactory"
+      ],
+      "city_canonical": [
+        "ABERDEEN",
+        "ALGONA",
+        "AUBURN",
+        "BELLEVUE",
+        "BLACK DIAMOND",
+        "BONNEY LAKE",
+        "BOTHELL",
+        "BURIEN",
+        "CARNATION",
+        "CLYDE HILL",
+        "COVINGTON",
+        "DES MOINES",
+        "DUVALL",
+        "ENUMCLAW",
+        "EVERETT",
+        "FALL CITY",
+        "FEDERAL WAY",
+        "HOBART",
+        "ISSAQUAH",
+        "KENMORE",
+        "KENT",
+        "KIRKLAND",
+        "LAKE FOREST PARK",
+        "LYNNWOOD",
+        "MAPLE VALLEY",
+        "MEDINA",
+        "MERCER ISLAND",
+        "NEWCASTLE",
+        "NORMANDY PARK",
+        "NORTH BEND",
+        "PACIFIC",
+        "PRESTON",
+        "PUYALLUP",
+        "RAVENSDALE",
+        "REDMOND",
+        "RENTON",
+        "SAMMAMISH",
+        "SEATAC",
+        "SEATTLE",
+        "SHORELINE",
+        "SKYKOMISH",
+        "SNOHOMISH",
+        "SNOQUALMIE",
+        "SNOQUALMIE PASS",
+        "TUKWILA",
+        "VASHON",
+        "VASHON ISLAND",
+        "WEST SEATTLE",
+        "WOODINVILLE"
+      ]
+    }
+  }
+}

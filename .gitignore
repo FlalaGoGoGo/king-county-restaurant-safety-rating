@@ -1,0 +1,7 @@
+Data/
+outputs/dashboard/index.html
+.streamlit/credentials.toml
+__pycache__/
+.DS_Store
+*.pyc
+

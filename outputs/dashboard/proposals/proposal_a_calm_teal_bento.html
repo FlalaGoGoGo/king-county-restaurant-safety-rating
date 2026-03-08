@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proposal A - Calm Teal Bento</title>
+  <style>
+    :root{--bg:#e8f4f5;--bg2:#d7ecee;--surface:#fff;--ink:#0f2d36;--muted:#5d7d85;--brand:#08727f;--brand2:#27c2a8;--line:#cae0e4}
+    *{box-sizing:border-box}body{margin:0;font-family:"Avenir Next","IBM Plex Sans",sans-serif;color:var(--ink);background:linear-gradient(145deg,var(--bg),var(--bg2));}
+    .wrap{max-width:1320px;margin:0 auto;padding:24px}.hero{padding:24px;border-radius:20px;background:linear-gradient(135deg,var(--brand),#0d8a98,var(--brand2));color:#f5feff}
+    .tabs{display:flex;gap:10px;margin:14px 0}.pill{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700}.pill.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+    .kpi{grid-column:span 3}.wide{grid-column:span 6}.full{grid-column:span 12}.label{font-size:12px;color:var(--muted)}
+    @media (max-width:900px){.kpi,.wide,.full{grid-column:span 12}.tabs{flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero"><h1>Proposal A · Calm Teal Bento</h1><p>Trust-first public dashboard with clean hierarchy and high legibility.</p></div>
+    <div class="tabs"><div class="pill active">Overview</div><div class="pill">Search</div><div class="pill">Summary</div><div class="pill">Predict</div></div>
+    <div class="grid">
+      <div class="card kpi"><div class="label">Inspection rows</div><h2>12874</h2></div>
+      <div class="card kpi"><div class="label">Restaurants</div><h2>12874</h2></div>
+      <div class="card kpi"><div class="label">Red records</div><h2>10557</h2></div>
+      <div class="card kpi"><div class="label">Blue records</div><h2>...</h2></div>
+      <div class="card wide"><h3>Search Flow</h3><p>Filter → Results → Detail → Violations</p></div>
+      <div class="card wide"><h3>Summary Flow</h3><p>Role selection + concern-driven insight blocks.</p></div>
+      <div class="card full"><h3>Predict Flow</h3><p>Model comparison, explainability assets, and interactive risk prediction.</p></div>
+    </div>
+  </div>
+</body>
+</html>

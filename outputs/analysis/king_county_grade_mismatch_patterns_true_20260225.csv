@@ -1,0 +1,10 @@
+dashboard_rating_label,official_rating_label,restaurants
+Good,Excellent,40
+Needs to Improve,Okay,33
+Excellent,Good,11
+Needs to Improve,Good,10
+Okay,Good,8
+Good,Okay,3
+Okay,Needs to Improve,2
+Excellent,Needs to Improve,1
+Okay,Excellent,1

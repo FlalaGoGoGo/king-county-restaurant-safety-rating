@@ -1,0 +1,12 @@
+{
+  "run_id": "20260225T234039Z",
+  "latest_business_count": 12874,
+  "gap_all_latest_businesses": 1679,
+  "gap_true_latest_businesses_excluding_na": 109,
+  "outputs": {
+    "issue_catalog_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/outputs/analysis/king_county_issue_catalog_20260225.csv",
+    "mismatch_patterns_all_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/outputs/analysis/king_county_grade_mismatch_patterns_all_20260225.csv",
+    "mismatch_patterns_true_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/outputs/analysis/king_county_grade_mismatch_patterns_true_20260225.csv",
+    "city_cleaning_reason_top_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/outputs/analysis/king_county_city_cleaning_reason_top_20260225.csv"
+  }
+}

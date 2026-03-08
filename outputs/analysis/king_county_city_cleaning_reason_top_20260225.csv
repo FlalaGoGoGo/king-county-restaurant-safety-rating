@@ -1,0 +1,26 @@
+city_cleaning_reason,businesses
+exact,12771
+mapped:VASHON ISLAND->VASHON,52
+outside_king_county_or_nonlocality:SNOHOMISH,7
+outside_king_county_or_nonlocality:TACOMA,7
+outside_king_county_or_nonlocality:EVERETT,5
+outside_king_county_or_nonlocality:BUCKLEY,4
+outside_king_county_or_nonlocality:PARKLAND,3
+outside_king_county_or_nonlocality:PUYALLUP,3
+outside_king_county_or_nonlocality:LYNNWOOD,3
+zip_majority_fix:98052->REDMOND,2
+outside_king_county_or_nonlocality:SUMNER,2
+outside_king_county_or_nonlocality:MONROE,2
+outside_king_county_or_nonlocality:OAK HARBOR,1
+outside_king_county_or_nonlocality:POULSBO,1
+outside_king_county_or_nonlocality:FIFE,1
+outside_king_county_or_nonlocality:GRANITE FALLS,1
+outside_king_county_or_nonlocality:ORTING,1
+outside_king_county_or_nonlocality:BONNEY LAKE,1
+outside_king_county_or_nonlocality:GIG HARBOR,1
+outside_king_county_or_nonlocality:MUKILTEO,1
+outside_king_county_or_nonlocality:MOUNT VERNON,1
+outside_king_county_or_nonlocality:CLE ELUM,1
+outside_king_county_or_nonlocality:LAKEWOOD,1
+mapped:WEST SEATTLE->SEATTLE,1
+outside_king_county_or_nonlocality:OLYMPIA,1

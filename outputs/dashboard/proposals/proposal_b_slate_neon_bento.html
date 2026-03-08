@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proposal B - Slate Neon Bento</title>
+  <style>
+    :root{--bg:#111827;--bg2:#0b1220;--surface:#172033;--ink:#e6f2ff;--muted:#9eb6d4;--brand:#00b8d9;--brand2:#00f5d4;--line:#2c3f63}
+    *{box-sizing:border-box}body{margin:0;font-family:"Avenir Next","IBM Plex Sans",sans-serif;color:var(--ink);background:radial-gradient(circle at 0 0,#1b2945,var(--bg2));}
+    .wrap{max-width:1320px;margin:0 auto;padding:24px}.hero{padding:24px;border-radius:20px;background:linear-gradient(135deg,#0a2535,#113859,#0d4c6a);border:1px solid #2c3f63}
+    .tabs{display:flex;gap:10px;margin:14px 0}.pill{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:700}.pill.active{background:linear-gradient(135deg,var(--brand),#3dd9ff);color:#0a1b2c;border-color:var(--brand)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+    .kpi{grid-column:span 3}.wide{grid-column:span 6}.full{grid-column:span 12}.label{font-size:12px;color:var(--muted)}
+    @media (max-width:900px){.kpi,.wide,.full{grid-column:span 12}.tabs{flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero"><h1>Proposal B · Slate + Neon Accent Bento</h1><p>Technical and high-energy dashboard language for analytics-heavy users.</p></div>
+    <div class="tabs"><div class="pill active">Overview</div><div class="pill">Search</div><div class="pill">Summary</div><div class="pill">Predict</div></div>
+    <div class="grid">
+      <div class="card kpi"><div class="label">Inspection rows</div><h2>12874</h2></div>
+      <div class="card kpi"><div class="label">Restaurants</div><h2>12874</h2></div>
+      <div class="card kpi"><div class="label">Red records</div><h2>10557</h2></div>
+      <div class="card kpi"><div class="label">Blue records</div><h2>...</h2></div>
+      <div class="card wide"><h3>Search</h3><p>Dense controls with neon focus accents and data-first hierarchy.</p></div>
+      <div class="card wide"><h3>Summary</h3><p>Role-based cards with stronger contrast and scan speed.</p></div>
+      <div class="card full"><h3>Predict</h3><p>Model diagnostics foregrounded with technical framing and clear state cues.</p></div>
+    </div>
+  </div>
+</body>
+</html>

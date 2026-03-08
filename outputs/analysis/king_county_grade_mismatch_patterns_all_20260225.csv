@@ -1,0 +1,17 @@
+dashboard_rating_label,official_rating_label,restaurants
+Excellent,Rating not available,1000
+Good,Rating not available,271
+Okay,Rating not available,139
+Rating not available,Excellent,92
+Rating not available,Good,44
+Good,Excellent,40
+Needs to Improve,Okay,33
+Rating not available,Okay,19
+Excellent,Good,11
+Needs to Improve,Good,10
+Okay,Good,8
+Needs to Improve,Rating not available,5
+Good,Okay,3
+Okay,Needs to Improve,2
+Excellent,Needs to Improve,1
+Okay,Excellent,1
