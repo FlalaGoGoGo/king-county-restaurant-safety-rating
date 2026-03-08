@@ -878,12 +878,27 @@ def generate_shap_artifacts(
 
     return {
         "best_tree_model_name": tree_model_info["name"],
+        "model_name": tree_model_info["name"],
         "summary_plot_path": str(summary_png),
         "bar_plot_path": str(bar_png),
         "mean_abs_shap_csv": str(imp_csv),
         "expected_value": expected_value,
         "feature_names": feature_names,
     }
+
+
+def select_best_shap_tree_model(results: List[Dict[str, Any]]) -> Dict[str, Any]:
+    eligible_names = {"Random Forest", "XGBoost", "LightGBM"}
+    shap_candidates = [row for row in results if row["name"] in eligible_names]
+    if not shap_candidates:
+        raise RuntimeError(
+            "No eligible SHAP tree model found. Expected one of: Random Forest, XGBoost, LightGBM."
+        )
+    shap_candidates.sort(
+        key=lambda row: (row["metrics"]["F1"], row["metrics"]["ROC_AUC"]),
+        reverse=True,
+    )
+    return shap_candidates[0]
 
 
 def build_interactive_defaults(dataset: pd.DataFrame) -> Dict[str, Any]:
@@ -979,10 +994,12 @@ def train_all_models(
         reverse=True,
     )
     best_tree = tree_candidates[0]
+    best_shap_tree = select_best_shap_tree_model(results)
 
     if skip_shap:
         shap_bundle = {
-            "best_tree_model_name": best_tree["name"],
+            "best_tree_model_name": best_shap_tree["name"],
+            "model_name": best_shap_tree["name"],
             "summary_plot_path": "",
             "bar_plot_path": "",
             "mean_abs_shap_csv": "",
@@ -992,7 +1009,7 @@ def train_all_models(
     else:
         print("[train] SHAP artifacts...")
         shap_bundle = generate_shap_artifacts(
-            tree_model_info=best_tree,
+            tree_model_info=best_shap_tree,
             X_test=X_test,
             output_dir=output_dir,
             shap_sample_size=shap_sample_size,
@@ -1021,6 +1038,7 @@ def train_all_models(
         "roc_json": roc_json,
         "best_model_name": best_model_name,
         "best_tree_model_name": best_tree["name"],
+        "best_shap_tree_model_name": best_shap_tree["name"],
         "shap": shap_bundle,
         "elapsed_seconds": elapsed,
         "train_rows": int(len(X_train)),
@@ -1216,11 +1234,13 @@ def main() -> int:
         "elapsed_seconds": bundle["elapsed_seconds"],
         "best_model_name": bundle["best_model_name"],
         "best_tree_model_name": bundle["best_tree_model_name"],
+        "best_shap_tree_model_name": bundle["best_shap_tree_model_name"],
         "models": models_payload,
         "comparison_csv_path": str(Path(bundle["comparison_csv"]).resolve()),
         "roc_json_path": str(Path(bundle["roc_json"]).resolve()),
         "shap": {
             "best_tree_model_name": bundle["shap"]["best_tree_model_name"],
+            "model_name": bundle["shap"]["model_name"],
             "summary_plot_path": (
                 str(Path(bundle["shap"]["summary_plot_path"]).resolve())
                 if bundle["shap"]["summary_plot_path"]
@@ -1250,6 +1270,7 @@ def main() -> int:
     print(f"[ok] manifest: {manifest_path}")
     print(f"[ok] best model: {manifest['best_model_name']}")
     print(f"[ok] best tree model: {manifest['best_tree_model_name']}")
+    print(f"[ok] best SHAP tree model: {manifest['best_shap_tree_model_name']}")
     return 0
 
 

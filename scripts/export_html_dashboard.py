@@ -5,6 +5,7 @@ import argparse
 import datetime as dt
 import json
 import re
+import time
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -476,7 +477,26 @@ def load_latest_payload(root: Path) -> Dict[str, Any]:
     state_path = root / "Data" / "state" / f"{DATASET_ID}_latest_run.json"
     if not state_path.exists():
         raise FileNotFoundError(f"latest run state not found: {state_path}")
-    return json.loads(state_path.read_text(encoding="utf-8"))
+    last_error: Exception | None = None
+    for _ in range(3):
+        raw_text = state_path.read_text(encoding="utf-8").strip()
+        if not raw_text:
+            last_error = ValueError(f"latest run state is empty: {state_path}")
+            time.sleep(0.2)
+            continue
+        try:
+            return json.loads(raw_text)
+        except json.JSONDecodeError as exc:
+            last_error = exc
+            time.sleep(0.2)
+    raise ValueError(f"latest run state is invalid JSON: {state_path}") from last_error
+
+
+def read_csv_or_empty(path_value: str | Path, **kwargs: Any) -> pd.DataFrame:
+    try:
+        return pd.read_csv(path_value, **kwargs)
+    except (pd.errors.EmptyDataError, FileNotFoundError):
+        return pd.DataFrame()
 
 
 def resolve_paths(root: Path, payload: Dict[str, Any]) -> Tuple[Path, Path]:
@@ -507,7 +527,13 @@ def load_risk_description_lookups(root: Path, payload: Dict[str, Any]) -> Tuple[
             pd.DataFrame(columns=["business_id", "inspection_date", "inspection_type", "risk_description_raw"]),
         )
 
-    raw_df = pd.read_csv(raw_csv, dtype=str).fillna("")
+    try:
+        raw_df = pd.read_csv(raw_csv, dtype=str).fillna("")
+    except pd.errors.EmptyDataError:
+        return (
+            pd.DataFrame(columns=["inspection_serial_num", "risk_description_raw"]),
+            pd.DataFrame(columns=["business_id", "inspection_date", "inspection_type", "risk_description_raw"]),
+        )
     if "description" not in raw_df.columns:
         return (
             pd.DataFrame(columns=["inspection_serial_num", "risk_description_raw"]),
@@ -1181,7 +1207,7 @@ def load_quality_payload(root: Path, run_id: str) -> Dict[str, Any]:
         issue_path = analysis_dir / f"king_county_issue_catalog_{run_stamp}.csv"
         if issue_path.exists():
             try:
-                issue_df = pd.read_csv(issue_path)
+                issue_df = read_csv_or_empty(issue_path)
                 for col in issue_columns:
                     if col not in issue_df.columns:
                         issue_df[col] = ""
@@ -1227,7 +1253,7 @@ def load_quality_payload(root: Path, run_id: str) -> Dict[str, Any]:
             issue_path_i = analysis_dir / f"king_county_issue_catalog_{run_stamp_i}.csv"
             if issue_path_i.exists():
                 try:
-                    issue_i = pd.read_csv(issue_path_i)
+                    issue_i = read_csv_or_empty(issue_path_i)
                     issue_text = issue_i.get("issue", pd.Series(dtype=str)).astype(str)
                     mask = issue_text.str.contains("true mismatch excluding", case=False, na=False)
                     if mask.any():
@@ -1428,7 +1454,7 @@ def build_predict_payload(root: Path, summary_df: pd.DataFrame) -> Dict[str, Any
             extra.get("coefficients_csv", "")
         )
         if top_feature_path and Path(top_feature_path).exists():
-            feat_df = pd.read_csv(top_feature_path)
+            feat_df = read_csv_or_empty(top_feature_path)
             if "feature" in feat_df.columns:
                 if "importance" in feat_df.columns:
                     value_col = "importance"
@@ -1460,7 +1486,7 @@ def build_predict_payload(root: Path, summary_df: pd.DataFrame) -> Dict[str, Any
         tuning_csv_path = model_details[model_name]["tuning_results_csv"]
         if tuning_csv_path and Path(tuning_csv_path).exists():
             try:
-                tdf = pd.read_csv(tuning_csv_path).head(10)
+                tdf = read_csv_or_empty(tuning_csv_path).head(10)
                 tuning_rows: List[List[Any]] = []
                 for r in tdf.itertuples(index=False):
                     tuning_rows.append(
@@ -1519,6 +1545,7 @@ def build_predict_payload(root: Path, summary_df: pd.DataFrame) -> Dict[str, Any
         "manifest_path": manifest_bundle.get("manifest_path", ""),
         "best_model_name": clean_text(manifest.get("best_model_name", "")),
         "best_tree_model_name": clean_text(manifest.get("best_tree_model_name", "")),
+        "best_shap_tree_model_name": clean_text(manifest.get("best_shap_tree_model_name", "")),
         "train_rows": int(manifest.get("train_rows", 0)),
         "test_rows": int(manifest.get("test_rows", 0)),
         "positive_rate_train": float(manifest.get("positive_rate_train", 0.0)),
@@ -1616,7 +1643,7 @@ def build_homework_payload(
     shap_csv_path = clean_text(shap_meta.get("mean_abs_shap_csv", ""))
     shap_rows: List[List[Any]] = []
     if shap_csv_path and Path(shap_csv_path).exists():
-        shap_df = pd.read_csv(shap_csv_path).head(15)
+        shap_df = read_csv_or_empty(shap_csv_path).head(15)
         for row in shap_df.itertuples(index=False):
             shap_rows.append(
                 [
@@ -1626,7 +1653,9 @@ def build_homework_payload(
             )
 
     best_model_name = clean_text(manifest.get("best_model_name", ""))
-    best_tree_model_name = clean_text(shap_meta.get("best_tree_model_name", "")) or clean_text(
+    best_tree_model_name = clean_text(manifest.get("best_shap_tree_model_name", "")) or clean_text(
+        shap_meta.get("model_name", "")
+    ) or clean_text(shap_meta.get("best_tree_model_name", "")) or clean_text(
         manifest.get("best_tree_model_name", "")
     )
     default_best_row = metrics_rows[0] if metrics_rows else ["", 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -5988,7 +6017,7 @@ def build_html(payload: Dict[str, Any]) -> str:
         return;
       }
       const shap = model.shap || {};
-      const shapModel = ((hw.executive || {}).best_tree_model_name) || model.best_tree_model_name || shap.best_tree_model_name || 'Decision Tree';
+      const shapModel = ((hw.executive || {}).best_tree_model_name) || model.best_shap_tree_model_name || (shap.model_name || shap.best_tree_model_name) || model.best_tree_model_name || 'XGBoost';
       const modelNames = (model.metrics_rows || []).map(r => String(r[0] || ''));
       const defaultModel = model.best_model_name && modelNames.includes(model.best_model_name)
         ? model.best_model_name

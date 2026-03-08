@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-02-26T04:30:38+00:00",
+  "generated_at_utc": "2026-03-08T21:00:27+00:00",
   "dataset_id": "f29f-zza5",
   "run_id": "20260225T234039Z",
   "random_state": 42,
@@ -36,9 +36,10 @@
   "test_rows": 3600,
   "positive_rate_train": 0.07595238095238095,
   "positive_rate_test": 0.07611111111111112,
-  "elapsed_seconds": 28.82,
+  "elapsed_seconds": 170.14,
   "best_model_name": "Logistic Regression",
   "best_tree_model_name": "Decision Tree",
+  "best_shap_tree_model_name": "XGBoost",
   "models": {
     "Logistic Regression": {
       "kind": "sklearn_pipeline",
@@ -175,11 +176,12 @@
   "comparison_csv_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/model_comparison.csv",
   "roc_json_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/roc_curves.json",
   "shap": {
-    "best_tree_model_name": "Decision Tree",
+    "best_tree_model_name": "XGBoost",
+    "model_name": "XGBoost",
     "summary_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/shap_summary.png",
     "bar_plot_path": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/plots/shap_bar.png",
     "mean_abs_shap_csv": "/Users/zhangziling/Documents/Project_King_County_Safety_Rating/models/hw1_predict/artifacts/shap_mean_abs_top30.csv",
-    "expected_value": 0.5000000000000017,
+    "expected_value": 0.0006047593196853995,
     "feature_names": [
       "num__inspection_score",
       "num__red_points_total",

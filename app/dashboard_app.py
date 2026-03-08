@@ -1132,14 +1132,28 @@ div[data-testid="stMetricValue"] {
   color: #0f2d36 !important;
   background: #fbfefe !important;
 }
+[data-testid="stTabs"] button[role="tab"]:nth-child(-n+3) {
+  border-color: #b6dfe4 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f4fcfd 100%) !important;
+}
+[data-testid="stTabs"] button[role="tab"]:nth-child(n+4) {
+  border-color: #c8d8db !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fafb 100%) !important;
+}
 [data-testid="stTabs"] button[role="tab"]:nth-child(4) {
   margin-left: auto;
 }
-[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+[data-testid="stTabs"] button[role="tab"]:nth-child(-n+3)[aria-selected="true"] {
   background: linear-gradient(135deg, #08727f, #0d8a98) !important;
   color: #f5feff !important;
   border-color: #08727f !important;
   box-shadow: 0 8px 20px rgba(8, 114, 127, 0.28);
+}
+[data-testid="stTabs"] button[role="tab"]:nth-child(n+4)[aria-selected="true"] {
+  background: linear-gradient(135deg, #0f2d36, #1c5664) !important;
+  color: #f5feff !important;
+  border-color: #0f2d36 !important;
+  box-shadow: 0 8px 20px rgba(15, 45, 54, 0.20);
 }
 [data-testid="stTextInput"] input,
 [data-testid="stSelectbox"] div[data-baseweb="select"] > div,
@@ -2847,7 +2861,7 @@ def build_overview_tab(
         poster_path = clean_text(poster_item.get("path", ""))
         poster_desc = clean_text(poster_item.get("description", ""))
         if poster_path and Path(poster_path).exists():
-            st.image(poster_path, caption=f"{selected_overview_rating} poster", width=190)
+            render_static_image(str(poster_path), caption=f"{selected_overview_rating} poster", width=190)
         else:
             st.info("Poster image not found in the local `images` directory.")
         st.markdown(f"**{selected_overview_rating}**")
@@ -2972,12 +2986,57 @@ def load_json_safe(path_str: str) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def retry_io_operation(loader: Any, attempts: int = 3, delay_seconds: float = 0.25) -> Any:
+    last_error: Exception | None = None
+    for attempt_idx in range(attempts):
+        try:
+            return loader()
+        except (OSError, TimeoutError) as exc:
+            last_error = exc
+            if attempt_idx == attempts - 1:
+                break
+            time.sleep(delay_seconds)
+    if last_error is not None:
+        raise last_error
+    raise RuntimeError("I/O operation failed without a captured exception.")
+
+
 @cache_resource
 def load_joblib_resource(path_str: str) -> Any:
     if not JOBLIB_AVAILABLE:
         raise RuntimeError("joblib is required for loading trained models.")
     resolved_path = resolve_repo_path(app_root(), path_str)
-    return joblib.load(resolved_path)
+    return retry_io_operation(lambda: joblib.load(resolved_path))
+
+
+@cache_resource
+def load_pil_image_resource(path_str: str) -> Any:
+    from PIL import Image
+
+    resolved_path = resolve_repo_path(app_root(), path_str)
+
+    def _load_image() -> Any:
+        with Image.open(resolved_path) as img:
+            return img.copy()
+
+    return retry_io_operation(_load_image)
+
+
+def render_static_image(path_value: str | Path, caption: str = "", width: str | int = "stretch") -> bool:
+    path_str = clean_text(path_value)
+    if not path_str:
+        return False
+    resolved_path = resolve_repo_path(app_root(), path_str)
+    if not Path(resolved_path).exists():
+        return False
+    try:
+        image = load_pil_image_resource(resolved_path)
+        st.image(image, caption=caption, width=width)
+        return True
+    except Exception as exc:
+        fallback_label = caption or Path(resolved_path).name
+        st.caption(f"Image unavailable for {fallback_label}: {exc}")
+        return False
 
 
 def build_mlp_binary_classifier(nn_module: Any) -> Any:
@@ -3013,7 +3072,7 @@ def load_torch_mlp_bundle(model_path_str: str, preprocessor_path_str: str) -> Di
     model_path = resolve_repo_path(app_root(), model_path_str)
     preprocessor_path = resolve_repo_path(app_root(), preprocessor_path_str)
 
-    checkpoint = torch.load(model_path, map_location="cpu")
+    checkpoint = retry_io_operation(lambda: torch.load(model_path, map_location="cpu"))
     input_dim = int(checkpoint.get("input_dim", 0))
     if input_dim <= 0:
         raise RuntimeError("Invalid PyTorch checkpoint: input_dim missing or invalid.")
@@ -3026,7 +3085,7 @@ def load_torch_mlp_bundle(model_path_str: str, preprocessor_path_str: str) -> Di
     model.load_state_dict(checkpoint["state_dict"])
     model.eval()
 
-    preprocessor = joblib.load(preprocessor_path)
+    preprocessor = retry_io_operation(lambda: joblib.load(preprocessor_path))
     return {
         "model": model,
         "preprocessor": preprocessor,
@@ -3050,11 +3109,13 @@ def predict_probability_with_manifest_model(model_info: Dict[str, Any], features
 
     if kind == "sklearn_pipeline":
         pipeline = load_joblib_resource(model_path)
-        if hasattr(pipeline, "predict_proba"):
-            proba = float(pipeline.predict_proba(features)[:, 1][0])
-        else:
+        def _predict_with_pipeline() -> float:
+            if hasattr(pipeline, "predict_proba"):
+                return float(pipeline.predict_proba(features)[:, 1][0])
             pred = float(pipeline.predict(features)[0])
-            proba = min(max(pred, 0.0), 1.0)
+            return min(max(pred, 0.0), 1.0)
+
+        proba = retry_io_operation(_predict_with_pipeline)
         return proba
 
     if kind == "pytorch_mlp":
@@ -3067,10 +3128,14 @@ def predict_probability_with_manifest_model(model_info: Dict[str, Any], features
         pre = bundle["preprocessor"]
         model = bundle["model"]
         torch = bundle["torch"]
-        arr = np.asarray(pre.transform(features), dtype=np.float32)
-        tensor = torch.from_numpy(arr)
-        with torch.no_grad():
-            proba = float(model(tensor).numpy().reshape(-1)[0])
+
+        def _predict_with_mlp() -> float:
+            arr = np.asarray(pre.transform(features), dtype=np.float32)
+            tensor = torch.from_numpy(arr)
+            with torch.no_grad():
+                return float(model(tensor).numpy().reshape(-1)[0])
+
+        proba = retry_io_operation(_predict_with_mlp)
         return min(max(proba, 0.0), 1.0)
 
     raise RuntimeError(f"Unsupported model kind: {kind}")
@@ -3113,6 +3178,16 @@ def build_predict_defaults_for_business(
     return defaults
 
 
+def get_best_shap_model_name(manifest: Dict[str, Any]) -> str:
+    shap_meta = manifest.get("shap", {}) or {}
+    return (
+        clean_text(manifest.get("best_shap_tree_model_name", ""))
+        or clean_text(shap_meta.get("model_name", ""))
+        or clean_text(shap_meta.get("best_tree_model_name", ""))
+        or clean_text(manifest.get("best_tree_model_name", ""))
+    )
+
+
 def maybe_render_shap_waterfall(
     manifest: Dict[str, Any],
     selected_model_name: str,
@@ -3127,9 +3202,8 @@ def maybe_render_shap_waterfall(
     shap = import_shap_module()
 
     models = manifest.get("models", {})
-    model_info = models.get(selected_model_name) or models.get(
-        clean_text(manifest.get("best_tree_model_name", ""))
-    )
+    fallback_model_name = get_best_shap_model_name(manifest)
+    model_info = models.get(selected_model_name) or models.get(fallback_model_name)
     if not model_info:
         st.info("No tree model metadata found for SHAP waterfall.")
         return
@@ -3495,7 +3569,7 @@ def build_search_tab(summary_df: pd.DataFrame, events_df: pd.DataFrame, violatio
     snapshot_left, snapshot_right = st.columns([0.7, 1.8], gap="large")
     with snapshot_left:
         if selected_poster_path and Path(selected_poster_path).exists():
-            st.image(selected_poster_path, caption=f"{latest_rating} poster", width=176)
+            render_static_image(str(selected_poster_path), caption=f"{latest_rating} poster", width=176)
         else:
             st.info("Poster image not found in the local `images` directory.")
         st.caption(
@@ -5451,7 +5525,7 @@ def build_model_performance_tab(root: Path) -> None:
         roc_path = clean_text(model_info.get("roc_plot_path", ""))
         if roc_path and Path(roc_path).exists():
             with roc_cols[roc_idx % 2]:
-                st.image(roc_path, caption=f"ROC curve — {model_name}", use_container_width=True)
+                render_static_image(roc_path, caption=f"ROC curve — {model_name}", width="stretch")
             roc_idx += 1
 
     for model_name, model_info in models.items():
@@ -5470,12 +5544,12 @@ def build_model_performance_tab(root: Path) -> None:
             roc_path = clean_text(model_info.get("roc_plot_path", ""))
             if roc_path and Path(roc_path).exists():
                 with media_col_left:
-                    st.image(roc_path, caption=f"ROC curve — {model_name}", use_container_width=True)
+                    render_static_image(roc_path, caption=f"ROC curve — {model_name}", width="stretch")
 
             tree_plot_path = clean_text(extra.get("tree_plot_path", ""))
             if tree_plot_path and Path(tree_plot_path).exists():
                 with media_col_right:
-                    st.image(tree_plot_path, caption="Best tuned decision tree", use_container_width=True)
+                    render_static_image(tree_plot_path, caption="Best tuned decision tree", width="stretch")
 
             feature_csv = clean_text(extra.get("feature_importance_csv", "")) or clean_text(
                 extra.get("coefficients_csv", "")
@@ -5489,7 +5563,7 @@ def build_model_performance_tab(root: Path) -> None:
 
             history_plot = clean_text(extra.get("history_plot_path", ""))
             if history_plot and Path(history_plot).exists():
-                st.image(history_plot, caption="MLP training history", use_container_width=True)
+                render_static_image(history_plot, caption="MLP training history", width="stretch")
 
             tuning_csv = clean_text(extra.get("tuning_results_csv", ""))
             tuning_plot = clean_text(extra.get("tuning_plot_path", ""))
@@ -5498,7 +5572,7 @@ def build_model_performance_tab(root: Path) -> None:
                 st.markdown("**Bonus — MLP hyperparameter tuning results**")
                 st.dataframe(tuning_df, use_container_width=True, hide_index=True)
             if tuning_plot and Path(tuning_plot).exists():
-                st.image(tuning_plot, caption="MLP tuning top configurations", use_container_width=True)
+                render_static_image(tuning_plot, caption="MLP tuning top configurations", width="stretch")
 
     render_essay_card(
         "Model trade-offs",
@@ -5542,9 +5616,7 @@ def build_explainability_prediction_tab(
         )
 
     shap_meta = manifest.get("shap", {})
-    shap_model_name = clean_text(shap_meta.get("best_tree_model_name", "")) or clean_text(
-        manifest.get("best_tree_model_name", "")
-    )
+    shap_model_name = get_best_shap_model_name(manifest)
     render_essay_card(
         "Explainability setup",
         f"Prediction can use any saved model, but the SHAP explanation view is anchored to {shap_model_name}. "
@@ -5560,7 +5632,7 @@ def build_explainability_prediction_tab(
     shap_left, shap_right = st.columns(2, gap="large")
     if shap_summary_path and Path(shap_summary_path).exists():
         with shap_left:
-            st.image(shap_summary_path, caption=f"SHAP summary plot — {shap_model_name}", use_container_width=True)
+            render_static_image(shap_summary_path, caption=f"SHAP summary plot — {shap_model_name}", width="stretch")
             st.caption(
                 "The beeswarm plot shows both importance and direction: points to the right push the prediction toward the positive class, while points to the left pull it down. "
                 "Features near the top influence the model most often and most strongly across the sample."
@@ -5570,7 +5642,7 @@ def build_explainability_prediction_tab(
             )
     if shap_bar_path and Path(shap_bar_path).exists():
         with shap_right:
-            st.image(shap_bar_path, caption=f"Mean absolute SHAP values — {shap_model_name}", use_container_width=True)
+            render_static_image(shap_bar_path, caption=f"Mean absolute SHAP values — {shap_model_name}", width="stretch")
             st.caption(
                 "The bar plot removes direction and ranks variables by average absolute impact. "
                 "It is useful for a manager because it summarizes where intervention effort is most likely to change model output."
@@ -5812,15 +5884,19 @@ def main() -> None:
     if summary_df.empty:
         st.warning("No restaurant data available.")
         st.stop()
-    active_panel = render_main_navigation()
+    st.caption("Tabs on the left are public release views. Tabs on the right are the assignment workflow.")
+    tab_labels = [label for _, label in PUBLIC_NAV_ITEMS + ASSIGNMENT_NAV_ITEMS]
+    overview_tab, search_tab, history_tab, executive_tab, descriptive_tab, performance_tab, explainability_tab = st.tabs(
+        tab_labels
+    )
 
-    if active_panel == "overview":
+    with overview_tab:
         render_panel_with_guard("Project Overview", build_overview_tab, events_df, violations_df, payload, root)
-    elif active_panel == "search":
+    with search_tab:
         render_panel_with_guard("Restaurant Search", build_search_tab, summary_df, events_df, violations_df)
-    elif active_panel == "summary":
+    with history_tab:
         render_panel_with_guard("Historical Insights", build_summary_tab, events_df, violations_df, payload, root)
-    elif active_panel == "executive":
+    with executive_tab:
         render_panel_with_guard(
             "Executive Summary",
             build_executive_summary_tab,
@@ -5829,11 +5905,11 @@ def main() -> None:
             summary_df,
             root,
         )
-    elif active_panel == "descriptive":
+    with descriptive_tab:
         render_panel_with_guard("Descriptive Analytics", build_descriptive_analytics_tab, events_df)
-    elif active_panel == "performance":
+    with performance_tab:
         render_panel_with_guard("Model Performance", build_model_performance_tab, root)
-    elif active_panel == "explainability":
+    with explainability_tab:
         render_panel_with_guard(
             "Explainability & Interactive Prediction",
             build_explainability_prediction_tab,
