@@ -1,5 +1,9 @@
 # King County Restaurant Safety Rating
 
+[![Live App](https://img.shields.io/badge/Live%20App-Streamlit-ff4b4b?logo=streamlit&logoColor=white)](https://king-county-restaurant-safety-rating.streamlit.app/)
+[![Open Data](https://img.shields.io/badge/Open%20Data-King%20County-0d8a98)](https://data.kingcounty.gov/Health-Wellness/Food-Establishment-Inspection-Data/f29f-zza5)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-0f2d36?logo=github)](https://github.com/FlalaGoGoGo/king-county-restaurant-safety-rating)
+
 An end-to-end data science workflow built on King County restaurant inspection data.
 
 This project serves two purposes at the same time:
@@ -10,6 +14,12 @@ This project serves two purposes at the same time:
 The core owner-facing prediction question is:
 
 `Can a restaurant owner use the latest inspection profile to estimate whether the next inspection will be high risk, and which controllable signals should be fixed first to reduce that risk?`
+
+## Quick Links
+
+- Live Streamlit app: [king-county-restaurant-safety-rating.streamlit.app](https://king-county-restaurant-safety-rating.streamlit.app/)
+- Public repository: [FlalaGoGoGo/king-county-restaurant-safety-rating](https://github.com/FlalaGoGoGo/king-county-restaurant-safety-rating)
+- King County open dataset: [Food Establishment Inspection Data](https://data.kingcounty.gov/Health-Wellness/Food-Establishment-Inspection-Data/f29f-zza5)
 
 ## Open Data Source
 
@@ -116,7 +126,7 @@ This keeps the repo reproducible without pushing bulky local artifacts.
 ## Deployment
 
 - Streamlit Community Cloud entry file: `streamlit_app.py`
-- Streamlit app link: [appapppy-bsuvbmrpzjxk6xnwqnjwua.streamlit.app](https://appapppy-bsuvbmrpzjxk6xnwqnjwua.streamlit.app/)
+- Streamlit app link: [king-county-restaurant-safety-rating.streamlit.app](https://king-county-restaurant-safety-rating.streamlit.app/)
 - HTML export path: `outputs/dashboard/index.html`
 
 ## Reproducibility Notes
