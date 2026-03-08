@@ -92,6 +92,7 @@ scripts/
   build_html_dashboard.sh
 models/
   hw1_predict/
+deploy_bundle/
 images/
 .streamlit/
 docs/
@@ -102,7 +103,7 @@ outputs/
 
 ## Why Raw Data Is Excluded
 
-The public GitHub package excludes raw and intermediate data under `Data/` and excludes the generated `outputs/dashboard/index.html` artifact because it is too large for a lightweight public repository. The project keeps:
+The public GitHub package excludes raw and intermediate data under `Data/` and excludes the generated `outputs/dashboard/index.html` artifact because it is too large for a lightweight public repository. For deployment, the repo includes a compressed `deploy_bundle/` with only the files required to run the Streamlit app on Streamlit Community Cloud. The project keeps:
 
 - code
 - saved models
@@ -115,7 +116,7 @@ This keeps the repo reproducible without pushing bulky local artifacts.
 ## Deployment
 
 - Streamlit Community Cloud entry file: `streamlit_app.py`
-- Streamlit app link: `TBD`
+- Streamlit app link: [appapppy-bsuvbmrpzjxk6xnwqnjwua.streamlit.app](https://appapppy-bsuvbmrpzjxk6xnwqnjwua.streamlit.app/)
 - HTML export path: `outputs/dashboard/index.html`
 
 ## Reproducibility Notes
