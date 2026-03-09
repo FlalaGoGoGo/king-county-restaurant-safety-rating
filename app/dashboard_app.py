@@ -1221,6 +1221,26 @@ div[data-testid="stMetricValue"] {
   line-height:1.45;
   margin-top:8px;
 }
+.result-metric-card {
+  border-top: 1px solid #eef2f4;
+  padding-top: 0.2rem;
+}
+.result-metric-label {
+  color: #4f6670;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 0.38rem;
+}
+.result-metric-value {
+  color: #0f2d36;
+  font-size: 1.7rem;
+  font-weight: 750;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
 .detail-info-list {
   color:#5d7d85;
   font-size:12px;
@@ -1371,6 +1391,9 @@ div[data-testid="stMetricValue"] {
   }
   .detail-info-value {
     font-size: 16px;
+  }
+  .result-metric-value {
+    font-size: 1.35rem;
   }
   .essay-card {
     padding: 12px 13px;
@@ -5013,6 +5036,18 @@ def render_takeaway_box(text: str) -> None:
     )
 
 
+def render_result_metric_card(label: str, value: str) -> None:
+    st.markdown(
+        (
+            "<div class='result-metric-card'>"
+            f"<div class='result-metric-label'>{escape(label)}</div>"
+            f"<div class='result-metric-value'>{escape(value)}</div>"
+            "</div>"
+        ),
+        unsafe_allow_html=True,
+    )
+
+
 def render_descriptive_insight(caption: str, takeaway: str) -> None:
     st.markdown(
         (
@@ -5709,10 +5744,14 @@ def build_explainability_prediction_tab(
         risk_band = probability_to_band(risk_prob)
         predicted_class = "Predicted high risk" if risk_prob >= 0.5 else "Predicted not high risk"
         p1, p2, p3, p4 = st.columns(4)
-        p1.metric("Predicted probability", f"{risk_prob:.1%}")
-        p2.metric("Predicted class", predicted_class)
-        p3.metric("Risk band", risk_band)
-        p4.metric("SHAP explanation model", shap_model_name or "-")
+        with p1:
+            render_result_metric_card("Predicted probability", f"{risk_prob:.1%}")
+        with p2:
+            render_result_metric_card("Predicted class", predicted_class)
+        with p3:
+            render_result_metric_card("Risk band", risk_band)
+        with p4:
+            render_result_metric_card("SHAP explanation model", shap_model_name or "-")
     except Exception as exc:
         st.error(f"Prediction failed: {exc}")
         return
