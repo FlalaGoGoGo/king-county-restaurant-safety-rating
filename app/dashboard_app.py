@@ -158,12 +158,7 @@ SEARCH_MODE_OPTIONS: List[Tuple[str, str]] = [
     ("map", "Map Search"),
     ("hybrid", "Keyword + Map"),
 ]
-PUBLIC_NAV_ITEMS: List[Tuple[str, str]] = [
-    ("overview", "Project Overview"),
-    ("search", "Restaurant Search"),
-    ("summary", "Historical Insights"),
-]
-ASSIGNMENT_NAV_ITEMS: List[Tuple[str, str]] = [
+HOMEWORK_TAB_ITEMS: List[Tuple[str, str]] = [
     ("executive", "Executive Summary"),
     ("descriptive", "Descriptive Analytics"),
     ("performance", "Model Performance"),
@@ -1325,85 +1320,6 @@ div[data-testid="stMetricValue"] {
   padding: 0.8rem;
   box-shadow: 0 6px 18px rgba(15, 45, 54, 0.05);
 }
-.nav-shell {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.9rem;
-  margin: 0 0 0.7rem;
-}
-.nav-shell-title {
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #5d7d85;
-}
-.nav-shell-note {
-  font-size: 0.9rem;
-  color: #49676f;
-}
-.nav-group-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin: 0 0 0.62rem;
-  padding: 0.28rem 0.72rem;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.nav-group-public-label {
-  color: #0d8a98;
-  background: rgba(13, 138, 152, 0.10);
-  border: 1px solid rgba(13, 138, 152, 0.18);
-}
-.nav-group-assignment-label {
-  color: #0f2d36;
-  background: rgba(15, 45, 54, 0.08);
-  border: 1px solid rgba(15, 45, 54, 0.12);
-}
-div[data-testid="column"]:has(.nav-group-public-label),
-div[data-testid="column"]:has(.nav-group-assignment-label) {
-  background: linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(248,252,252,0.96) 100%);
-  border: 1px solid #cae0e4;
-  border-radius: 18px;
-  padding: 0.88rem 0.95rem 0.84rem;
-  box-shadow: 0 8px 24px rgba(15, 45, 54, 0.08);
-}
-div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button,
-div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button {
-  min-height: 4.1rem;
-  border-radius: 14px !important;
-  padding: 0.88rem 1rem !important;
-  white-space: normal !important;
-  line-height: 1.18 !important;
-  font-size: 0.92rem !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-  text-align: left !important;
-  box-shadow: none !important;
-}
-div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button {
-  border-color: #b6dfe4 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f4fcfd 100%) !important;
-}
-div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button[kind="primary"] {
-  background: linear-gradient(135deg, #16a2af, #0d8a98) !important;
-  border-color: #0d8a98 !important;
-  color: #f5feff !important;
-}
-div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button {
-  border-color: #c8d8db !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f7fafb 100%) !important;
-}
-div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button[kind="primary"] {
-  background: linear-gradient(135deg, #0f2d36, #1c5664) !important;
-  border-color: #0f2d36 !important;
-  color: #f5feff !important;
-}
 @media (max-width: 768px) {
   .section-hero {
     padding: 0 0 0.8rem;
@@ -1414,23 +1330,6 @@ div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButto
   }
   .section-subtitle {
     font-size: 0.9rem;
-  }
-  .nav-shell {
-    display: block;
-  }
-  .nav-shell-note {
-    margin-top: 0.3rem;
-  }
-  div[data-testid="column"]:has(.nav-group-public-label),
-  div[data-testid="column"]:has(.nav-group-assignment-label) {
-    padding: 0.72rem 0.78rem;
-    border-radius: 14px;
-  }
-  div[data-testid="column"]:has(.nav-group-public-label) [data-testid="stButton"] button,
-  div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButton"] button {
-    min-height: 3.15rem;
-    font-size: 0.82rem !important;
-    padding: 0.66rem 0.56rem !important;
   }
   [data-testid="stButton"] button {
     width: 100%;
@@ -5156,39 +5055,62 @@ def build_executive_summary_tab(
     k3.metric("Model rows", f"{len(model_dataset):,}")
     k4.metric("Restaurants", f"{summary_df['business_id'].nunique():,}")
 
-    render_subsection_label(
-        "Project framing",
-        "This section should read like a concise business brief before the reader enters the descriptive, modeling, and explainability tabs.",
+    approach_summary = (
+        f"The analysis converts repeated inspections into a next-inspection prediction dataset with "
+        f"{len(MODEL_NUMERIC_FEATURES)} numeric features and {len(MODEL_CATEGORICAL_FEATURES)} categorical features. "
+        f"Using the current saved artifacts, {best_model_name} is the best overall model"
     )
-    intro_row1 = st.columns(2, gap="large")
-    with intro_row1[0]:
-        render_essay_card(
-            "Dataset and database purpose",
-            "This project uses King County restaurant inspection records to turn public food-safety data into an owner-facing decision tool. The database combines an inspection-event table, which records each inspection visit and its score, grade, result, and risk signals, with a violation-level table that stores individual findings, point severity, and remediation guidance.",
+    if not best_row.empty:
+        row = best_row.iloc[0]
+        approach_summary += (
+            f" with F1={float(row['F1']):.4f} and ROC_AUC={float(row['ROC_AUC']):.4f}; "
+            f"the recurring global signals are {top_signals}."
         )
-    with intro_row1[1]:
+    else:
+        approach_summary += f", and the recurring global signals are {top_signals}."
+
+    stats_df = pd.DataFrame(
+        [
+            ["Coverage window", f"{min_date} to {max_date}"],
+            ["Target positive rate", f"{positive_rate:.2%}" if pd.notna(positive_rate) else "-"],
+            ["Model numeric features", ", ".join(MODEL_NUMERIC_FEATURES)],
+            ["Model categorical features", ", ".join(MODEL_CATEGORICAL_FEATURES)],
+        ],
+        columns=["Item", "Value"],
+    )
+
+    render_subsection_label(
+        "Executive brief",
+        "This tab should read like a concise report opening before the reader enters descriptive analytics, model comparison, and explainability.",
+    )
+    brief_col, snapshot_col = st.columns([1.35, 1.0], gap="large")
+    with brief_col:
         render_essay_card(
-            "Prediction target",
-            "The prediction target is target_next_high_risk: whether the same restaurant's next recorded inspection falls into the high-risk class. In this project, an inspection is treated as high risk when the published grade is Needs to Improve or when red points reach 25 or more.",
+            "Project context",
+            "This project uses King County restaurant inspection records to turn public food-safety data into an owner-facing decision tool. The core database combines an inspection-event table, which records each visit and its score, grade, result, and risk signals, with a violation-level table that stores individual findings, point severity, and remediation guidance. The prediction target is target_next_high_risk: whether the same restaurant's next recorded inspection falls into the high-risk class.",
         )
-    intro_row2 = st.columns(2, gap="large")
-    with intro_row2[0]:
         render_essay_card(
             "Why this matters",
             "For a restaurant owner, the value is operational rather than academic. If the latest inspection profile can estimate next-inspection risk early enough, the owner can focus on the controllable signals most likely to trigger a poor next outcome before the next county visit happens.",
         )
-
-    if not best_row.empty:
-        row = best_row.iloc[0]
-        with intro_row2[1]:
-            render_essay_card(
-                "Approach and key findings",
-                f"The analysis converts repeated inspections into a next-inspection prediction dataset with {len(MODEL_NUMERIC_FEATURES)} numeric features and {len(MODEL_CATEGORICAL_FEATURES)} categorical features. Using the current saved artifacts, {best_model_name} is the best overall model with F1={float(row['F1']):.4f} and ROC_AUC={float(row['ROC_AUC']):.4f}; the recurring global signals are {top_signals}.",
-            )
+        render_essay_card(
+            "Approach and key finding",
+            approach_summary,
+        )
+    with snapshot_col:
+        render_subsection_label(
+            "Assignment snapshot",
+            "A compact right rail keeps the business question, scope, and coverage visible without forcing more hero cards.",
+        )
+        st.markdown(f"**Primary question**  \n{HOMEWORK_OWNER_QUESTION}")
+        render_takeaway_box(
+            "The descriptive tab checks whether current inspection signals already separate future high-risk cases. The model tab compares multiple learners, and the explainability tab turns one prediction into an owner-facing explanation."
+        )
+        st.dataframe(stats_df, use_container_width=True, hide_index=True, height=210)
 
     render_subsection_label(
-        "Database structure and business question",
-        "These two tables are the backbone of the homework story: one defines the sequence of inspections, the other explains what was found and how to respond.",
+        "Database structure",
+        "These two tables are the backbone of the homework story: one defines inspection sequence, the other explains what was found and how to respond.",
     )
     c1, c2 = st.columns(2, gap="large")
     with c1:
@@ -5201,35 +5123,6 @@ def build_executive_summary_tab(
             "dashboard_violation_explained table",
             "One row represents one violation finding linked back to an inspection event. This table explains what went wrong, how severe it was, and what remediation action category or priority should be considered next.",
         )
-
-    framing_col, stats_col = st.columns([1.35, 1.0], gap="large")
-    with framing_col:
-        render_subsection_label(
-            "Homework framing",
-            "The assignment question has to support descriptive analysis, model comparison, and local explanation in a single workflow.",
-        )
-        st.write(
-            "Primary question: "
-            f"**{HOMEWORK_OWNER_QUESTION}**"
-        )
-        st.write(
-            "The descriptive tab tests whether the latest inspection profile already contains visible warning signals. "
-            "The model tab measures whether multiple algorithms can convert those signals into useful predictive performance. "
-            "The explainability tab then shows which factors move one restaurant's predicted risk up or down for a decision-maker."
-        )
-
-    stats_df = pd.DataFrame(
-        [
-            ["Coverage window", f"{min_date} to {max_date}"],
-            ["Target positive rate", f"{positive_rate:.2%}" if pd.notna(positive_rate) else "-"],
-            ["Model numeric features", ", ".join(MODEL_NUMERIC_FEATURES)],
-            ["Model categorical features", ", ".join(MODEL_CATEGORICAL_FEATURES)],
-        ],
-        columns=["Item", "Value"],
-    )
-    with stats_col:
-        render_subsection_label("Coverage and feature scope")
-        st.dataframe(stats_df, use_container_width=True, hide_index=True, height=210)
 
     render_subsection_label(
         "Field dictionary",
@@ -5250,22 +5143,26 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
         "Assignment Workflow",
     )
     positive_rate = float(model_dataset["target_next_high_risk"].mean())
-    d1, d2, d3, d4 = st.columns(4)
-    d1.metric("Model rows", f"{len(model_dataset):,}")
-    d2.metric("Restaurants", f"{events_df['business_id'].nunique():,}")
-    d3.metric("Positive class rate", f"{positive_rate:.1%}")
-    d4.metric("Model features", f"{len(MODEL_ALL_FEATURES)}")
     render_subsection_label(
         "Dataset introduction",
         "The descriptive tab should establish dataset size, target balance, and the main warning signals before model comparison begins.",
     )
-    render_essay_card(
-        "Dataset introduction",
-        f"The modeling table contains {len(model_dataset):,} ordered inspection records drawn from {events_df['business_id'].nunique():,} restaurants. It predicts the next inspection's high-risk flag from the current inspection profile using {len(MODEL_ALL_FEATURES)} features ({len(MODEL_NUMERIC_FEATURES)} numeric and {len(MODEL_CATEGORICAL_FEATURES)} categorical).",
-    )
-    render_takeaway_box(
-        "The data is large enough for a meaningful classification workflow, but the target is imbalanced, so F1, recall, ROC-AUC, and class-aware modeling choices matter more than raw accuracy alone."
-    )
+    intro_col, stats_col = st.columns([1.35, 1.0], gap="large")
+    with intro_col:
+        render_essay_card(
+            "Dataset introduction",
+            f"The modeling table contains {len(model_dataset):,} ordered inspection records drawn from {events_df['business_id'].nunique():,} restaurants. It predicts the next inspection's high-risk flag from the current inspection profile using {len(MODEL_ALL_FEATURES)} features ({len(MODEL_NUMERIC_FEATURES)} numeric and {len(MODEL_CATEGORICAL_FEATURES)} categorical).",
+        )
+        render_takeaway_box(
+            "The data is large enough for a meaningful classification workflow, but the target is imbalanced, so F1, recall, ROC-AUC, and class-aware modeling choices matter more than raw accuracy alone."
+        )
+    with stats_col:
+        metric_pairs = st.columns(2)
+        metric_pairs[0].metric("Model rows", f"{len(model_dataset):,}")
+        metric_pairs[1].metric("Restaurants", f"{events_df['business_id'].nunique():,}")
+        metric_pairs = st.columns(2)
+        metric_pairs[0].metric("Positive class rate", f"{positive_rate:.1%}")
+        metric_pairs[1].metric("Model features", f"{len(MODEL_ALL_FEATURES)}")
 
     render_subsection_label(
         "Signal comparison charts",
@@ -5472,29 +5369,30 @@ def build_model_performance_tab(root: Path) -> None:
         "Comparison summary",
         "The table and F1 view stay near the top so the reader can see the leaderboard before opening model-specific detail panels.",
     )
-    st.markdown("**Model comparison summary table**")
-    st.dataframe(show_df, use_container_width=True, hide_index=True)
-    st.markdown("**Key metric comparison (F1)**")
-    st.bar_chart(show_df.set_index("Model")[["F1"]], use_container_width=True)
-
     best_model_name = clean_text(manifest.get("best_model_name", "")) or clean_text(show_df.iloc[0]["Model"])
     best_row = show_df[show_df["Model"] == best_model_name].head(1)
-    if not best_row.empty:
-        row = best_row.iloc[0]
-        render_essay_card(
-            "Comparison interpretation",
-            f"{best_model_name} is the current best overall model on F1 with ROC_AUC={row['ROC_AUC']:.4f}. "
-            "That result is not surprising because the task mixes strong linear severity signals with a relatively rare target, so a balanced logistic baseline can remain competitive while still being interpretable.",
+    summary_left, summary_right = st.columns([1.0, 1.35], gap="large")
+    with summary_left:
+        if not best_row.empty:
+            row = best_row.iloc[0]
+            render_essay_card(
+                "Comparison interpretation",
+                f"{best_model_name} is the current best overall model on F1 with ROC_AUC={row['ROC_AUC']:.4f}. "
+                "That result is not surprising because the task mixes strong linear severity signals with a relatively rare target, so a balanced logistic baseline can remain competitive while still being interpretable.",
+            )
+        render_takeaway_box(
+            "Accuracy alone is misleading in this dataset. The comparison should be read through F1, recall, and ROC-AUC because missing a future high-risk case is more costly than labeling too many rows as safe."
         )
-    render_takeaway_box(
-        "Accuracy alone is misleading in this dataset. The comparison should be read through F1, recall, and ROC-AUC because missing a future high-risk case is more costly than labeling too many rows as safe."
-    )
+    with summary_right:
+        st.markdown("**Model comparison summary table**")
+        st.dataframe(show_df, use_container_width=True, hide_index=True, height=212)
+        st.markdown("**Key metric comparison (F1)**")
+        st.bar_chart(show_df.set_index("Model")[["F1"]], use_container_width=True)
 
     render_subsection_label(
         "Best hyperparameters",
         "The saved manifest keeps the tuning output explicit so the workflow can be audited model by model.",
     )
-    st.markdown("**Best hyperparameters by model**")
     params_df = pd.DataFrame(
         [
             {
@@ -5506,7 +5404,15 @@ def build_model_performance_tab(root: Path) -> None:
             for model_name, model_info in models.items()
         ]
     )
-    st.dataframe(params_df, use_container_width=True, hide_index=True)
+    params_col, notes_col = st.columns([1.35, 1.0], gap="large")
+    with params_col:
+        st.markdown("**Best hyperparameters by model**")
+        st.dataframe(params_df, use_container_width=True, hide_index=True, height=230)
+    with notes_col:
+        render_essay_card(
+            "How to read this section",
+            "Treat the leaderboard, hyperparameters, and ROC views as one stack. The top model answers which classifier performs best overall, while the tuned settings and ROC curves explain whether that ranking is stable across thresholds and model families.",
+        )
 
     render_subsection_label(
         "ROC curves",
@@ -5550,10 +5456,13 @@ def build_model_performance_tab(root: Path) -> None:
             )
             if feature_csv and Path(feature_csv).exists():
                 feat_df = load_csv_safe(feature_csv)
-                st.dataframe(feat_df.head(20), use_container_width=True, hide_index=True)
+                feature_col, chart_col = st.columns([1.15, 1.0], gap="large")
+                with feature_col:
+                    st.dataframe(feat_df.head(20), use_container_width=True, hide_index=True, height=320)
                 value_col = "importance" if "importance" in feat_df.columns else "abs_coefficient"
                 if value_col in feat_df.columns and "feature" in feat_df.columns:
-                    st.bar_chart(feat_df.head(15).set_index("feature")[[value_col]], use_container_width=True)
+                    with chart_col:
+                        st.bar_chart(feat_df.head(15).set_index("feature")[[value_col]], use_container_width=True)
 
             history_plot = clean_text(extra.get("history_plot_path", ""))
             if history_plot and Path(history_plot).exists():
@@ -5564,8 +5473,13 @@ def build_model_performance_tab(root: Path) -> None:
             if tuning_csv and Path(tuning_csv).exists():
                 tuning_df = load_csv_safe(tuning_csv)
                 st.markdown("**Bonus — MLP hyperparameter tuning results**")
-                st.dataframe(tuning_df, use_container_width=True, hide_index=True)
-            if tuning_plot and Path(tuning_plot).exists():
+                tuning_left, tuning_right = st.columns([1.15, 1.0], gap="large")
+                with tuning_left:
+                    st.dataframe(tuning_df, use_container_width=True, hide_index=True, height=260)
+                if tuning_plot and Path(tuning_plot).exists():
+                    with tuning_right:
+                        render_static_image(tuning_plot, caption="MLP tuning top configurations", width="stretch")
+            elif tuning_plot and Path(tuning_plot).exists():
                 render_static_image(tuning_plot, caption="MLP tuning top configurations", width="stretch")
 
     render_essay_card(
@@ -5798,47 +5712,6 @@ def build_explainability_prediction_tab(
         st.caption(
             "The waterfall explanation is generated on demand. This keeps the cloud app responsive while preserving the required local explanation workflow."
         )
-
-
-def render_main_navigation() -> str:
-    nav_labels = dict(PUBLIC_NAV_ITEMS + ASSIGNMENT_NAV_ITEMS)
-    default_nav = PUBLIC_NAV_ITEMS[0][0]
-    current_nav = clean_text(st.session_state.get("main_nav_section", default_nav))
-    if current_nav not in nav_labels:
-        current_nav = default_nav
-        st.session_state["main_nav_section"] = current_nav
-
-    st.markdown(
-        (
-            "<div class='nav-shell'>"
-            "<div class='nav-shell-title'>Navigation</div>"
-            "<div class='nav-shell-note'>Public release on the left, assignment workflow on the right.</div>"
-            "</div>"
-        ),
-        unsafe_allow_html=True,
-    )
-
-    public_col, assignment_col = st.columns([1.0, 1.45], gap="large")
-
-    def render_group(container: Any, title: str, title_class: str, items: List[Tuple[str, str]]) -> None:
-        container.markdown(
-            f"<div class='nav-group-label {title_class}'>{escape(title)}</div>",
-            unsafe_allow_html=True,
-        )
-        button_weights = [max(1.0, min(1.45, len(nav_label) / 18.0)) for _, nav_label in items]
-        button_cols = container.columns(button_weights, gap="small")
-        for col, (nav_key, nav_label) in zip(button_cols, items):
-            button_type = "primary" if current_nav == nav_key else "secondary"
-            if col.button(nav_label, key=f"main_nav_{nav_key}", use_container_width=True, type=button_type):
-                if st.session_state.get("main_nav_section") != nav_key:
-                    st.session_state["main_nav_section"] = nav_key
-                    st.rerun()
-
-    render_group(public_col, "Public Release", "nav-group-public-label", PUBLIC_NAV_ITEMS)
-    render_group(assignment_col, "Assignment Workflow", "nav-group-assignment-label", ASSIGNMENT_NAV_ITEMS)
-    return clean_text(st.session_state.get("main_nav_section", current_nav)) or default_nav
-
-
 def render_panel_with_guard(panel_label: str, render_func: Any, *args: Any) -> None:
     try:
         render_func(*args)
@@ -5878,7 +5751,7 @@ def main() -> None:
     if summary_df.empty:
         st.warning("No restaurant data available.")
         st.stop()
-    tab_labels = [label for _, label in ASSIGNMENT_NAV_ITEMS]
+    tab_labels = [label for _, label in HOMEWORK_TAB_ITEMS]
     executive_tab, descriptive_tab, performance_tab, explainability_tab = st.tabs(tab_labels)
 
     with executive_tab:
