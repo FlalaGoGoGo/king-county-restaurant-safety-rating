@@ -1257,6 +1257,34 @@ div[data-testid="stMetricValue"] {
 .takeaway-box strong {
   color: #0f2d36;
 }
+.descriptive-note-stack {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.42rem;
+}
+.descriptive-caption-box {
+  min-height: 6.2rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #e2e8eb;
+  border-radius: 8px;
+  background: #fbfcfd;
+  color: #60757d;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.descriptive-takeaway-box {
+  min-height: 4.6rem;
+  padding: 0.82rem 0.92rem;
+  border-left: 3px solid #0d8a98;
+  border-radius: 8px;
+  background: #f6fafb;
+  color: #1f3b43;
+  font-size: 0.91rem;
+  line-height: 1.5;
+}
+.descriptive-takeaway-box strong {
+  color: #0f2d36;
+}
 .dictionary-note {
   color: #5d7d85;
   font-size: 12px;
@@ -1347,6 +1375,10 @@ div[data-testid="stMetricValue"] {
   .essay-card {
     padding: 12px 13px;
     border-radius: 12px;
+  }
+  .descriptive-caption-box,
+  .descriptive-takeaway-box {
+    min-height: unset;
   }
 }
 </style>
@@ -4981,6 +5013,18 @@ def render_takeaway_box(text: str) -> None:
     )
 
 
+def render_descriptive_insight(caption: str, takeaway: str) -> None:
+    st.markdown(
+        (
+            "<div class='descriptive-note-stack'>"
+            f"<div class='descriptive-caption-box'>{escape(caption)}</div>"
+            f"<div class='descriptive-takeaway-box'><strong>Takeaway.</strong> {escape(takeaway)}</div>"
+            "</div>"
+        ),
+        unsafe_allow_html=True,
+    )
+
+
 def build_manifest_metrics_df(models: Dict[str, Any]) -> pd.DataFrame:
     rows: List[Dict[str, Any]] = []
     for model_name, model_info in models.items():
@@ -5195,12 +5239,9 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
         ax.set_title("Target distribution")
         st.pyplot(fig, use_container_width=True)
         plt.close(fig)
-        st.caption(
-            "Most inspection rows lead to a low-risk next inspection, while only a small minority lead to a future high-risk outcome. "
-            "That imbalance is exactly why this project emphasizes class-aware metrics, uses balanced or tuned models, and avoids reading accuracy as the primary quality signal."
-        )
-        render_takeaway_box(
-            f"Only about {positive_rate:.1%} of rows are positive, so the modeling problem is detection of a relatively rare but operationally important failure state."
+        render_descriptive_insight(
+            "Most inspection rows lead to a low-risk next inspection, while only a small minority lead to a future high-risk outcome. That imbalance is exactly why this project emphasizes class-aware metrics, uses balanced or tuned models, and avoids reading accuracy as the primary quality signal.",
+            f"Only about {positive_rate:.1%} of rows are positive, so the modeling problem is detection of a relatively rare but operationally important failure state.",
         )
     with pair_top_right:
         st.markdown("**Inspection score by future high-risk target**")
@@ -5210,12 +5251,9 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
         ax.set_title("Current score vs. future target")
         st.pyplot(fig, use_container_width=True)
         plt.close(fig)
-        st.caption(
-            "The high-risk-next group has a clearly worse current inspection score distribution, which suggests the current inspection already contains usable early warning information. "
-            "The distributions still overlap materially, so a single cut-off score is not enough; the prediction task needs multiple variables working together."
-        )
-        render_takeaway_box(
-            "Inspection score is informative, but not decisive on its own. Owners should treat it as one signal in a broader risk profile rather than as a standalone decision rule."
+        render_descriptive_insight(
+            "The high-risk-next group has a clearly worse current inspection score distribution, which suggests the current inspection already contains usable early warning information. The distributions still overlap materially, so a single cut-off score is not enough; the prediction task needs multiple variables working together.",
+            "Inspection score is informative, but not decisive on its own. Owners should treat it as one signal in a broader risk profile rather than as a standalone decision rule.",
         )
 
     pair_mid_left, pair_mid_right = st.columns(2, gap="large")
@@ -5227,12 +5265,9 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
         ax.set_title("Current red points vs. future target")
         st.pyplot(fig, use_container_width=True)
         plt.close(fig)
-        st.caption(
-            "Red points are much more concentrated in the group that later returns as high risk, which is consistent with their role as a high-severity inspection signal. "
-            "This is useful for restaurant owners because red points are directly actionable: reducing them should improve both current compliance and future inspection resilience."
-        )
-        render_takeaway_box(
-            "Red-point severity is one of the strongest warning indicators in the dataset and should be the first operational triage signal for a restaurant owner."
+        render_descriptive_insight(
+            "Red points are much more concentrated in the group that later returns as high risk, which is consistent with their role as a high-severity inspection signal. This is useful for restaurant owners because red points are directly actionable: reducing them should improve both current compliance and future inspection resilience.",
+            "Red-point severity is one of the strongest warning indicators in the dataset and should be the first operational triage signal for a restaurant owner.",
         )
     with pair_mid_right:
         st.markdown("**Violation count by future high-risk target**")
@@ -5242,12 +5277,9 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
         ax.set_title("Current violation count vs. future target")
         st.pyplot(fig, use_container_width=True)
         plt.close(fig)
-        st.caption(
-            "Inspection rows that later lead to a high-risk next visit also tend to carry more total violations in the current visit. "
-            "This suggests that repeated process-control weakness, not just one extreme finding, is part of the risk pattern captured by the model."
-        )
-        render_takeaway_box(
-            "A high volume of findings is itself a signal that the business may not have stabilized its food-safety process before the next inspection."
+        render_descriptive_insight(
+            "Inspection rows that later lead to a high-risk next visit also tend to carry more total violations in the current visit. This suggests that repeated process-control weakness, not just one extreme finding, is part of the risk pattern captured by the model.",
+            "A high volume of findings is itself a signal that the business may not have stabilized its food-safety process before the next inspection.",
         )
 
     result_rate = (
@@ -5269,12 +5301,9 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
             ax.set_ylim(0, min(1.0, float(result_rate["high_risk_rate"].max()) * 1.15 + 0.02))
             st.pyplot(fig, use_container_width=True)
             plt.close(fig)
-            st.caption(
-                "Not all published inspection results carry the same downstream implication. "
-                "Outcome categories such as unsatisfactory or return-oriented results show materially higher future high-risk rates, which supports using the categorical outcome itself in the model."
-            )
-            render_takeaway_box(
-                "The current inspection result encodes process state. Owners should treat an unsatisfactory or return-oriented status as a strong signal that next-visit risk remains elevated."
+            render_descriptive_insight(
+                "Not all published inspection results carry the same downstream implication. Outcome categories such as unsatisfactory or return-oriented results show materially higher future high-risk rates, which supports using the categorical outcome itself in the model.",
+                "The current inspection result encodes process state. Owners should treat an unsatisfactory or return-oriented status as a strong signal that next-visit risk remains elevated.",
             )
 
     city_rate = (
@@ -5294,47 +5323,43 @@ def build_descriptive_analytics_tab(events_df: pd.DataFrame) -> None:
             ax.tick_params(axis="x", rotation=35)
             st.pyplot(fig, use_container_width=True)
             plt.close(fig)
-            st.caption(
-                "Even after requiring a reasonable number of rows per city, future high-risk rates are not uniform across locations. "
-                "That pattern does not mean geography alone causes risk, but it indicates that city context may proxy for operating environment, restaurant mix, or enforcement intensity."
-            )
-            render_takeaway_box(
-                "Location is a useful context feature, but it should be interpreted as environment and mix, not as a causal explanation by itself."
+            render_descriptive_insight(
+                "Even after requiring a reasonable number of rows per city, future high-risk rates are not uniform across locations. That pattern does not mean geography alone causes risk, but it indicates that city context may proxy for operating environment, restaurant mix, or enforcement intensity.",
+                "Location is a useful context feature, but it should be interpreted as environment and mix, not as a causal explanation by itself.",
             )
 
     render_subsection_label(
         "Correlation structure",
-        "The heatmap stays full-width because it is a cross-signal reference rather than a single-variable chart.",
+        "The heatmap is centered at the same visual width as the earlier charts so the section remains consistent.",
     )
-    st.markdown("**Correlation heatmap**")
-    corr_cols = [
-        "inspection_score",
-        "red_points_total",
-        "blue_points_total",
-        "violation_count_total",
-        "grade_num",
-        "is_high_risk",
-        "target_next_high_risk",
-    ]
-    corr_df = model_dataset[corr_cols].corr(numeric_only=True)
-    fig, ax = plt.subplots(figsize=(6.6, 4.9))
-    im = ax.imshow(corr_df.values, vmin=-1, vmax=1, cmap="coolwarm")
-    ax.set_xticks(range(len(corr_df.columns)))
-    ax.set_yticks(range(len(corr_df.columns)))
-    ax.set_xticklabels(corr_df.columns, rotation=45, ha="right")
-    ax.set_yticklabels(corr_df.columns)
-    ax.set_title("Correlation matrix")
-    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
-    fig.tight_layout()
-    st.pyplot(fig, use_container_width=True)
-    plt.close(fig)
-    st.caption(
-        "The strongest correlations cluster among score, point totals, violation count, and current high-risk status, which confirms that these variables describe related hygiene severity dimensions. "
-        "None of them fully subsume the target, which is why combining them in a predictive model remains justified."
-    )
-    render_takeaway_box(
-        "The heatmap supports the modeling strategy: related signals move together, but no single column is enough to explain next-inspection risk by itself."
-    )
+    heat_left, heat_center, heat_right = st.columns([0.5, 1.0, 0.5], gap="large")
+    with heat_center:
+        st.markdown("**Correlation heatmap**")
+        corr_cols = [
+            "inspection_score",
+            "red_points_total",
+            "blue_points_total",
+            "violation_count_total",
+            "grade_num",
+            "is_high_risk",
+            "target_next_high_risk",
+        ]
+        corr_df = model_dataset[corr_cols].corr(numeric_only=True)
+        fig, ax = plt.subplots(figsize=(5.4, 4.2))
+        im = ax.imshow(corr_df.values, vmin=-1, vmax=1, cmap="coolwarm")
+        ax.set_xticks(range(len(corr_df.columns)))
+        ax.set_yticks(range(len(corr_df.columns)))
+        ax.set_xticklabels(corr_df.columns, rotation=45, ha="right")
+        ax.set_yticklabels(corr_df.columns)
+        ax.set_title("Correlation matrix")
+        fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+        fig.tight_layout()
+        st.pyplot(fig, use_container_width=True)
+        plt.close(fig)
+        render_descriptive_insight(
+            "The strongest correlations cluster among score, point totals, violation count, and current high-risk status, which confirms that these variables describe related hygiene severity dimensions. None of them fully subsume the target, which is why combining them in a predictive model remains justified.",
+            "The heatmap supports the modeling strategy: related signals move together, but no single column is enough to explain next-inspection risk by itself.",
+        )
 
 
 def build_model_performance_tab(root: Path) -> None:
