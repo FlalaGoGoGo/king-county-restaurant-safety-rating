@@ -1118,42 +1118,33 @@ div[data-testid="stMetricValue"] {
   line-height: 1.5;
 }
 [data-testid="stTabs"] [data-baseweb="tab-list"] {
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid #cae0e4;
-  border-radius: 14px;
-  padding: 0.35rem;
-  flex-wrap: wrap;
+  gap: 0.75rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #d9e2e6;
+  border-radius: 0;
+  padding: 0 0 0.35rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 [data-testid="stTabs"] button[role="tab"] {
-  border-radius: 10px !important;
-  border: 1px solid #cae0e4 !important;
-  font-weight: 700 !important;
+  padding: 0.3rem 0.05rem 0.75rem !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  font-weight: 650 !important;
+  color: #67808a !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+}
+[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
   color: #0f2d36 !important;
-  background: #fbfefe !important;
+  border-bottom-color: #0d8a98 !important;
+  background: transparent !important;
 }
-[data-testid="stTabs"] button[role="tab"]:nth-child(-n+3) {
-  border-color: #b6dfe4 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f4fcfd 100%) !important;
-}
-[data-testid="stTabs"] button[role="tab"]:nth-child(n+4) {
-  border-color: #c8d8db !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f7fafb 100%) !important;
-}
-[data-testid="stTabs"] button[role="tab"]:nth-child(4) {
-  margin-left: auto;
-}
-[data-testid="stTabs"] button[role="tab"]:nth-child(-n+3)[aria-selected="true"] {
-  background: linear-gradient(135deg, #08727f, #0d8a98) !important;
-  color: #f5feff !important;
-  border-color: #08727f !important;
-  box-shadow: 0 8px 20px rgba(8, 114, 127, 0.28);
-}
-[data-testid="stTabs"] button[role="tab"]:nth-child(n+4)[aria-selected="true"] {
-  background: linear-gradient(135deg, #0f2d36, #1c5664) !important;
-  color: #f5feff !important;
-  border-color: #0f2d36 !important;
-  box-shadow: 0 8px 20px rgba(15, 45, 54, 0.20);
+[data-testid="stTabs"] button[role="tab"]:hover {
+  color: #0f2d36 !important;
 }
 [data-testid="stTextInput"] input,
 [data-testid="stSelectbox"] div[data-baseweb="select"] > div,
@@ -1165,17 +1156,20 @@ div[data-testid="stMetricValue"] {
   background: #ffffff !important;
 }
 [data-testid="stButton"] button {
-  border-radius: 10px !important;
-  border: 1px solid #9fc8cf !important;
-  font-weight: 700 !important;
-  min-height: 2.8rem;
-  padding: 0.68rem 0.95rem !important;
+  border-radius: 8px !important;
+  border: 1px solid #cbd7dc !important;
+  font-weight: 650 !important;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.9rem !important;
   white-space: normal !important;
   line-height: 1.2 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
 }
 [data-testid="stButton"] button[kind="primary"] {
-  background: linear-gradient(135deg, #08727f, #0d8a98) !important;
-  color: #f5feff !important;
+  background: #0d8a98 !important;
+  border-color: #0d8a98 !important;
+  color: #ffffff !important;
 }
 [data-testid="stButton"] button > div {
   text-align: left;
@@ -1183,37 +1177,37 @@ div[data-testid="stMetricValue"] {
 [data-testid="stPlotlyChart"],
 [data-testid="stImage"],
 [data-testid="stPyplot"] {
-  border: 1px solid #dde8ea;
-  border-radius: 18px;
+  border: 1px solid #e2e8eb;
+  border-radius: 12px;
   background: #ffffff;
-  padding: 0.55rem;
-  box-shadow: 0 8px 18px rgba(15, 45, 54, 0.05);
+  padding: 0.35rem;
+  box-shadow: none;
 }
 [data-testid="stImage"] img {
-  border-radius: 14px;
+  border-radius: 8px;
 }
 [data-testid="stExpander"] {
-  border: 1px solid #dde8ea !important;
-  border-radius: 16px !important;
-  background: linear-gradient(180deg, #ffffff 0%, #fafdfd 100%);
+  border: 1px solid #e2e8eb !important;
+  border-radius: 10px !important;
+  background: #ffffff;
 }
 .stCaptionContainer,
 [data-testid="stCaptionContainer"] {
   color: #607f86;
 }
 .stDataFrame {
-  border: 1px solid #cae0e4;
-  border-radius: 12px;
+  border: 1px solid #e2e8eb;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(15, 45, 54, 0.07);
+  box-shadow: none;
 }
 .detail-info-card {
-  background: linear-gradient(180deg,#ffffff 0%, #f8fcfc 100%);
-  border:1px solid #cae0e4;
-  border-radius:12px;
+  background: #ffffff;
+  border:1px solid #e2e8eb;
+  border-radius:10px;
   padding:12px 14px;
   min-height:116px;
-  box-shadow: 0 2px 8px rgba(15, 45, 54, 0.07);
+  box-shadow: none;
 }
 .detail-info-title {
   color:#5d7d85;
@@ -1243,11 +1237,11 @@ div[data-testid="stMetricValue"] {
   margin:0 0 4px;
 }
 .essay-card {
-  background: linear-gradient(180deg, #ffffff 0%, #f6fbfb 100%);
-  border: 1px solid #cae0e4;
-  border-radius: 16px;
-  padding: 16px 18px;
-  box-shadow: 0 4px 14px rgba(15, 45, 54, 0.08);
+  background: #ffffff;
+  border: 1px solid #e2e8eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: none;
   margin-bottom: 12px;
 }
 .essay-card h4 {
@@ -1259,10 +1253,10 @@ div[data-testid="stMetricValue"] {
   color: #36545c;
 }
 .takeaway-box {
-  border-left: 4px solid #08727f;
-  background: rgba(13, 138, 152, 0.08);
-  padding: 12px 14px;
-  border-radius: 12px;
+  border-left: 3px solid #0d8a98;
+  background: #f6fafb;
+  padding: 10px 12px;
+  border-radius: 8px;
   margin: 8px 0 18px;
 }
 .takeaway-box strong {
@@ -1274,51 +1268,51 @@ div[data-testid="stMetricValue"] {
 }
 .section-hero {
   margin: 0 0 1rem;
-  padding: 1rem 1.1rem 1rem;
-  border: 1px solid #dde8ea;
-  border-radius: 20px;
-  background:
-    linear-gradient(180deg, #ffffff 0%, #f8fbfb 100%);
-  box-shadow: 0 12px 28px rgba(15, 45, 54, 0.06);
+  padding: 0 0 0.9rem;
+  border: none;
+  border-bottom: 1px solid #e7edf0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 .section-kicker {
-  font-size: 0.74rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #0d8a98;
-  margin-bottom: 0.35rem;
+  letter-spacing: 0.08em;
+  color: #6c838c;
+  margin-bottom: 0.22rem;
 }
 .section-title {
   margin: 0;
   color: #0f2d36;
-  font-size: 1.55rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-size: 1.75rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
 }
 .section-subtitle {
-  margin-top: 0.5rem;
-  color: #4c6a72;
-  line-height: 1.55;
-  font-size: 0.97rem;
+  margin-top: 0.35rem;
+  color: #60757d;
+  line-height: 1.5;
+  font-size: 0.96rem;
 }
 .subsection-label {
-  margin: 0.45rem 0 0.55rem;
+  margin: 0.75rem 0 0.4rem;
   color: #0f2d36;
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 .panel-hint {
-  margin: 0.3rem 0 0.75rem;
-  color: #607f86;
-  font-size: 0.9rem;
+  margin: 0.15rem 0 0.55rem;
+  color: #72858d;
+  font-size: 0.88rem;
 }
 .glass-panel {
-  border: 1px solid #dde8ea;
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
-  padding: 0.95rem 1rem;
-  box-shadow: 0 8px 20px rgba(15, 45, 54, 0.05);
+  border: 1px solid #e2e8eb;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 0.9rem 1rem;
+  box-shadow: none;
 }
 .compact-rule {
   margin: 0.9rem 0 1rem;
@@ -1412,11 +1406,11 @@ div[data-testid="column"]:has(.nav-group-assignment-label) [data-testid="stButto
 }
 @media (max-width: 768px) {
   .section-hero {
-    padding: 0.82rem 0.88rem 0.9rem;
-    border-radius: 16px;
+    padding: 0 0 0.8rem;
+    border-radius: 0;
   }
   .section-title {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
   }
   .section-subtitle {
     font-size: 0.9rem;
@@ -5868,8 +5862,8 @@ def main() -> None:
 
     render_section_header(
         "King County Restaurant Safety Dashboard",
-        "Public-facing hygiene transparency tools on the left, assignment-grade analytics workflow on the right.",
-        "King County Open Data"
+        "Assignment-focused workflow for executive summary, descriptive analytics, model performance, and explainability.",
+        "MSIS 522 HW1"
     )
 
     try:
@@ -5884,18 +5878,9 @@ def main() -> None:
     if summary_df.empty:
         st.warning("No restaurant data available.")
         st.stop()
-    st.caption("Tabs on the left are public release views. Tabs on the right are the assignment workflow.")
-    tab_labels = [label for _, label in PUBLIC_NAV_ITEMS + ASSIGNMENT_NAV_ITEMS]
-    overview_tab, search_tab, history_tab, executive_tab, descriptive_tab, performance_tab, explainability_tab = st.tabs(
-        tab_labels
-    )
+    tab_labels = [label for _, label in ASSIGNMENT_NAV_ITEMS]
+    executive_tab, descriptive_tab, performance_tab, explainability_tab = st.tabs(tab_labels)
 
-    with overview_tab:
-        render_panel_with_guard("Project Overview", build_overview_tab, events_df, violations_df, payload, root)
-    with search_tab:
-        render_panel_with_guard("Restaurant Search", build_search_tab, summary_df, events_df, violations_df)
-    with history_tab:
-        render_panel_with_guard("Historical Insights", build_summary_tab, events_df, violations_df, payload, root)
     with executive_tab:
         render_panel_with_guard(
             "Executive Summary",
